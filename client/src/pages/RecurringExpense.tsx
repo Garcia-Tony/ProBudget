@@ -9,8 +9,10 @@ export function RecurringExpense() {
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [popUp, setPopUp] = useState(false);
+  const [, setExpense] = useState(false);
 
   const handlePopUp = () => setPopUp(true);
+  const handleExpense = () => setExpense(true);
   const closePopUp = () => setPopUp(false);
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
 
@@ -67,10 +69,25 @@ export function RecurringExpense() {
           alt="Pro Budget Logo"
           className="size-14 max-w-[60px] max-h-[60px] mt-5 md:size-20 md:mt-4 md:max-w-[150px] md:max-h-[150px]"
         />
-        <div className="flex-1 flex justify-center">
-          <h2 className="md:text-6xl text-4xl font-bold text-center text-black ml-12 md:ml-[-10px] mr-40 mt-4 md:mt-7 md:mb-4 ">
+        <div className="flex-1 flex justify-center flex-1 -space-x-20">
+          <h2 className="md:text-6xl text-4xl font-bold text-center text-black ml-12 md:ml-[-10px] mr-40 mt-5 md:mt-7 md:mb-4 ">
             Recurring
           </h2>
+
+          <button onClick={handleExpense} className="mr-20">
+            <svg
+              className="mt-4 w-[55px] h-[50px] md:w-[60px] md:h-[60px] md:mt-[14px] text-[#01898B]"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M9 2a1 1 0 0 1 1 1v1h4V3a1 1 0 1 1 2 0v1h3a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h3V3a1 1 0 0 1 1-1zM8 6H5v3h14V6h-3v1a1 1 0 1 1-2 0V6h-4v1a1 1 0 0 1-2 0V6zm11 5H5v8h14v-8z"
+                strokeWidth="0"
+                stroke="currentColor"
+                fill="currentColor"
+              />
+            </svg>
+          </button>
         </div>
       </div>
 
