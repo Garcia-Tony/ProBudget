@@ -48,6 +48,18 @@ export function RecurringExpense() {
         {expenses.length === 0 ? 'No Recurring Expenses' : 'Recurring Expenses'}
       </p>
 
+      <div className="space-y-3 mt-3 px-[5px]">
+        {expenses.length === 0 && (
+          <>
+            <div className="">
+              <div className=" md:mb-2 md:h-20 h-16 mb-1 bg-[#EFEFEF] rounded-lg shadow-md shadow-[#00000099] border"></div>
+              <div className=" md:mb-2 md:h-20 h-16 mb-1 bg-[#EFEFEF] rounded-lg shadow-md shadow-[#00000099]"></div>
+              <div className=" md:mb-2 md:h-20 h-16 mb-1 bg-[#EFEFEF] rounded-lg shadow-md shadow-[#00000099]"></div>
+            </div>
+          </>
+        )}
+      </div>
+
       {isMenuOpen && (
         <div
           className={`absolute top-0 left-0 h-screen w-64 bg-white shadow-md border transition-all transform ease-in-out
