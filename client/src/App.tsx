@@ -5,6 +5,7 @@ import { RegistrationForm } from './pages/SignUp';
 import { Home } from './pages/Home';
 import { NewExpense } from './pages/NewExpense';
 import { ExpenseProvider } from './pages/ExpenseContext';
+import { RecurringExpense } from './pages/RecurringExpense';
 
 export function App() {
   return (
@@ -16,6 +17,7 @@ export function App() {
           <Route path="/log-in" element={<AuthPage mode="log-in" />} />
           <Route path="/new-expense" element={<NewExpense />} />
           <Route path="/home" element={<Home />} />
+          <Route path="/recurring" element={<RecurringExpense />} />
         </Routes>
       </ExpenseProvider>
     </UserProvider>
