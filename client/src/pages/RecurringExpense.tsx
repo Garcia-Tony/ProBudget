@@ -14,6 +14,38 @@ export function RecurringExpense() {
   const closePopUp = () => setPopUp(false);
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
 
+  const getNextDueDate = (schedule: string, dueDate: string) => {
+    const currentDate = new Date(dueDate);
+    const nextDate = new Date(currentDate);
+
+    const scheduleMap: Record<string, number> = {
+      'every-week': 7,
+      'every-month': 1,
+      'every-3-months': 3,
+      'every-6-months': 6,
+      'every-year': 12,
+    };
+
+    if (schedule === 'every-week') {
+      nextDate.setDate(currentDate.getDate() + scheduleMap[schedule]);
+    } else if (scheduleMap[schedule]) {
+      const newMonth = currentDate.getMonth() + scheduleMap[schedule];
+      nextDate.setMonth(newMonth);
+
+      if (nextDate.getDate() < currentDate.getDate()) {
+        nextDate.setDate(0);
+      }
+    } else {
+      return 'N/A';
+    }
+
+    return nextDate.toLocaleDateString('en-US', {
+      month: '2-digit',
+      day: '2-digit',
+      year: 'numeric',
+    });
+  };
+
   return (
     <div className="relative flex-grow flex-1 pl-2 px-4">
       <div className="flex items-center w-full justify-between space-x-4">
@@ -35,7 +67,7 @@ export function RecurringExpense() {
           alt="Pro Budget Logo"
           className="size-14 max-w-[60px] max-h-[60px] mt-5 md:size-20 md:mt-4 md:max-w-[150px] md:max-h-[150px]"
         />
-        <div className=" flex-1 flex justify-center">
+        <div className="flex-1 flex justify-center">
           <h2 className="md:text-6xl text-4xl font-bold text-center text-black ml-12 md:ml-[-10px] mr-40 mt-4 md:mt-7 md:mb-4 ">
             Recurring
           </h2>
@@ -44,20 +76,35 @@ export function RecurringExpense() {
 
       <hr className="my-4 border-t-2 border-[#01898B] md:mt-4" />
 
-      <p className=" text-2xl text-black ml-2 md:text-3xl">
+      <p className="text-2xl text-black ml-2 md:text-3xl">
         {expenses.length === 0 ? 'No Recurring Expenses' : 'Recurring Expenses'}
       </p>
 
       <div className="space-y-3 mt-3 px-[5px]">
         {expenses.length === 0 && (
-          <>
-            <div className="">
-              <div className=" md:mb-2 md:h-20 h-16 mb-1 bg-[#EFEFEF] rounded-lg shadow-md shadow-[#00000099] border"></div>
-              <div className=" md:mb-2 md:h-20 h-16 mb-1 bg-[#EFEFEF] rounded-lg shadow-md shadow-[#00000099]"></div>
-              <div className=" md:mb-2 md:h-20 h-16 mb-1 bg-[#EFEFEF] rounded-lg shadow-md shadow-[#00000099]"></div>
-            </div>
-          </>
+          <div className="">
+            <div className="md:mb-2 md:h-20 h-16 mb-1 bg-[#EFEFEF] rounded-lg shadow-md shadow-[#00000099] border"></div>
+            <div className="md:mb-2 md:h-20 h-16 mb-1 bg-[#EFEFEF] rounded-lg shadow-md shadow-[#00000099]"></div>
+            <div className="md:mb-2 md:h-20 h-16 mb-1 bg-[#EFEFEF] rounded-lg shadow-md shadow-[#00000099]"></div>
+          </div>
         )}
+
+        {expenses.length > 0 &&
+          expenses.map((expense, index) => (
+            <div
+              key={index}
+              className="mb-[-4px] md:mb-[-5px] md:text-xl h-16 md:h-20 bg-[#EFEFEF] rounded-lg shadow-md shadow-[#00000099]">
+              <div className="flex px-2 md:mt-2 mb-2 md:mb-3 pt-1">
+                <p>{expense.name}</p>
+              </div>
+              <div className="flex justify-between items-center px-2">
+                <p>
+                  Next Due: {getNextDueDate(expense.schedule, expense.dueDate)}
+                </p>
+                <p>${expense.amount}</p>
+              </div>
+            </div>
+          ))}
       </div>
 
       {isMenuOpen && (
