@@ -17,10 +17,13 @@ export function NewExpense() {
   const [expense, setExpense] = useState(false);
   const [, setCancel] = useState(false);
   const [save, setSave] = useState(false);
+  const [, setCalendar] = useState(false);
 
   const handlePopUp = () => setPopUp(true);
   const closePopUp = () => setPopUp(false);
   const handleExpense = () => setExpense(true);
+  const handleCalendar = () => setCalendar(true);
+
   const closeExpense = () => setExpense(false);
   const closeCancel = () => setCancel(false);
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
@@ -55,7 +58,12 @@ export function NewExpense() {
           className="size-14 max-w-[60px] max-h-[60px] mt-5 md:size-20 md:mt-4 md:max-w-[150px] md:max-h-[150px]"
         />
         <div className="flex w-full justify-start items-center md:mt-4 mt-2">
-          <button onClick={handleExpense} className="ml-[243px]">
+          <button
+            onClick={() => {
+              handleCalendar();
+              navigate('/calendar');
+            }}
+            className="ml-[243px]">
             <svg
               className="mt-3.5 w-[55px] h-[50px] md:w-[60px] md:h-[60px] md:mt-[14px] text-[#01898B]"
               viewBox="0 0 24 24"
@@ -334,7 +342,11 @@ export function NewExpense() {
             Expense
           </button>
 
-          <button className="md:text-4xl md:px-28 md:ml-[25px] text-2xl block text-center border border-[#01898B] rounded-full py-1 px-[47px] ml-3 mt-5 bg-[#01898B] text-white  hover:bg-[#016B6D] transition">
+          <button
+            className="md:text-4xl md:px-28 md:ml-[25px] text-2xl block text-center border border-[#01898B] rounded-full py-1 px-[47px] ml-3 mt-5 bg-[#01898B] text-white  hover:bg-[#016B6D] transition"
+            onClick={() => {
+              navigate('/recurring');
+            }}>
             Recurring
           </button>
 

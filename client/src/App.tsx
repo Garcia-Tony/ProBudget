@@ -6,6 +6,7 @@ import { Home } from './pages/Home';
 import { NewExpense } from './pages/NewExpense';
 import { ExpenseProvider } from './pages/ExpenseContext';
 import { RecurringExpense } from './pages/RecurringExpense';
+import { CalendarExpense } from './pages/CalendarExpense';
 
 export function App() {
   return (
@@ -18,6 +19,7 @@ export function App() {
           <Route path="/new-expense" element={<NewExpense />} />
           <Route path="/home" element={<Home />} />
           <Route path="/recurring" element={<RecurringExpense />} />
+          <Route path="/calendar" element={<CalendarExpense />} />
         </Routes>
       </ExpenseProvider>
     </UserProvider>
