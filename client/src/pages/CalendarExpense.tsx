@@ -1,10 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useExpenses } from './ExpenseContext';
 import { useData } from '../components/User';
 
 export function CalendarExpense() {
-  const { totalAmount } = useExpenses();
   const { handleSignOut } = useData();
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -41,7 +39,7 @@ export function CalendarExpense() {
           className="size-14 max-w-[60px] max-h-[60px] mt-5 md:size-20 md:mt-4 md:max-w-[150px] md:max-h-[150px]"
         />
         <div className=" flex-1 flex justify-center">
-          <h2 className="md:text-6xl text-4xl font-bold text-center text-black ml-10 md:ml-[-10px] mr-40 mt-4 md:mt-7 md:mb-4 ">
+          <h2 className="md:text-6xl text-4xl font-bold text-center text-black ml-10 md:ml-[-10px] mr-40 mt-5 md:mt-7 md:mb-4 ">
             Calendar
           </h2>
         </div>
@@ -115,13 +113,6 @@ export function CalendarExpense() {
       </div>
 
       <hr className="my-4 border-t-2 border-[#01898B] md:mt-4" />
-
-      <div className="space-y-3 mt-3 px-[5px]">
-        <div className="h-5 md:h-6 flex justify-between items-center px-2 font-bold">
-          <p className="text-xl md:text-2xl text-black">Total</p>
-          <p className="text-xl md:text-2xl text-black">${totalAmount}</p>
-        </div>
-      </div>
 
       {isMenuOpen && (
         <div
