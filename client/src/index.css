@@ -26,6 +26,13 @@
   margin-top: -28px;
   border: 2px solid black;
   background-color: #01898b;
+  text-decoration: none;
+  border-bottom: none;
+}
+
+.custom-calendar .react-calendar__month-view__weekdays abbr {
+  text-decoration: none;
+  border-bottom: none;
 }
 
 .custom-calendar .react-calendar__navigation {
@@ -46,34 +53,34 @@
   background-color: transparent;
   margin-top: -5px;
   font-size: 28px;
-  color: black !important;
-  border: none !important;
-  outline: none !important;
-  box-shadow: none !important;
+  color: black;
+  border: none;
+  outline: none;
+  box-shadow: none;
 }
 
 .custom-calendar .react-calendar__navigation button:focus {
-  background-color: transparent !important;
-  color: black !important;
-  border: none !important;
-  outline: none !important;
-  box-shadow: none !important;
+  background-color: transparent;
+  color: black;
+  border: none;
+  outline: none;
+  box-shadow: none;
 }
 
 .custom-calendar .react-calendar__navigation button:first-child:hover {
   margin-top: -5px;
   font-size: 28px;
-  background-color: transparent !important;
-  color: black !important;
-  border: none !important;
-  outline: none !important;
+  background-color: transparent;
+  color: black;
+  border: none;
+  outline: none;
 }
 
 .custom-calendar .react-calendar__navigation button:last-child:hover {
   margin-top: -5px;
   font-size: 28px;
-  background-color: transparent !important;
-  color: black !important;
-  border: none !important;
-  outline: none !important;
+  background-color: transparent;
+  color: black;
+  border: none;
+  outline: none;
 }
