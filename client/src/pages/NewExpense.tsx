@@ -23,17 +23,28 @@ export function NewExpense() {
   const closePopUp = () => setPopUp(false);
   const handleExpense = () => setExpense(true);
   const handleCalendar = () => setCalendar(true);
-
   const closeExpense = () => setExpense(false);
   const closeCancel = () => setCancel(false);
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
-  const handleSave = () => setSave(true);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
+    const datePattern = /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/;
+
+    if (!expenseName || !amount || !dueDate || !schedule) {
+      alert('Please fill in all required fields.');
+      return;
+    }
+
+    if (!dueDate.match(datePattern)) {
+      alert('Invalid date format! Please enter the date in MM/DD/YYYY format.');
+      return;
+    }
+
     const newExpense = { name: expenseName, amount, dueDate, schedule };
     addExpense(newExpense);
+    setSave(true);
   };
 
   return (
@@ -196,11 +207,11 @@ export function NewExpense() {
           <div className=" flex flex-col md:flex-row md:space-x-36 md:text-2xl md:items-center mt-2 pt-2 bg-[#E1E0E0] rounded-lg shadow-md shadow-gray-500 p-2">
             <label className="mt-[-2px] md:mt-1 md:mb-1 flex items-center space-x-2">
               <input
+                required
                 type="radio"
                 name="Schedule"
                 value="every-week"
                 className="form-radio text-[#01898B] md:w-4 md:h-4"
-                required
                 onChange={(e) => setSchedule(e.target.value)}
               />
               <span
@@ -280,7 +291,7 @@ export function NewExpense() {
           <button
             className=" hover:bg-[#016B6D] transition transition drop-shadow-xl mt-6 px-[65px] md:px-[275px] mr-1 ml-2 text-4xl md:text-5xl font-bold py-1 md:py-2 px-12 bg-[#067E81] text-black border rounded-3xl"
             style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)' }}
-            onClick={handleSave}>
+            type="submit">
             Save
           </button>
 

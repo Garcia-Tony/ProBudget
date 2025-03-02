@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useData } from '../components/User';
+import { useExpenses } from './ExpenseContext';
 
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import '../index.css';
+import { Value } from 'react-calendar/src/shared/types.js';
 
 export function CalendarExpense() {
+  const { expenses } = useExpenses();
   const { handleSignOut } = useData();
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -14,6 +17,10 @@ export function CalendarExpense() {
   const [expense, setExpense] = useState(false);
   const [, setCalendar] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
+  const [popupExpenses, setPopupExpenses] = useState<{
+    date: string;
+    expenses: { name: string; amount: string }[];
+  } | null>(null);
 
   const handlePopUp = () => setPopUp(true);
   const closePopUp = () => setPopUp(false);
@@ -21,6 +28,44 @@ export function CalendarExpense() {
   const handleCalendar = () => setCalendar(true);
   const closeExpense = () => setExpense(false);
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
+
+  const formatDate = (date: Date) => {
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    const year = date.getFullYear();
+
+    return `${month}/${day}/${year}`;
+  };
+
+  const tileContent = ({ date }: { date: Date }) => {
+    const dateString = formatDate(date);
+    const hasExpense = expenses.some(
+      (expense) => expense.dueDate === dateString
+    );
+
+    return hasExpense ? (
+      <div className="relative flex justify-end w-full">
+        <span className="expense-dot"></span>
+      </div>
+    ) : null;
+  };
+
+  const handleDateClick = (value: Value) => {
+    if (!value || Array.isArray(value)) return;
+
+    const date = value as Date;
+    setSelectedDate(date);
+    const dateString = formatDate(date);
+
+    const expensesOnDate = expenses.filter(
+      (expense) => expense.dueDate === dateString
+    );
+    if (expensesOnDate.length > 0) {
+      setPopupExpenses({ date: dateString, expenses: expensesOnDate });
+    } else {
+      setPopupExpenses(null);
+    }
+  };
 
   return (
     <div className="relative flex-grow flex-1 pl-2 px-4">
@@ -125,11 +170,38 @@ export function CalendarExpense() {
         <Calendar
           locale="en-US"
           calendarType="gregory"
-          onChange={(date) => setSelectedDate(date as Date)}
+          onChange={handleDateClick}
           value={selectedDate}
+          tileContent={tileContent}
           className="custom-calendar px-[-40px] w-full max-w-[100px] text-xl h-[510px] border border-[#01898B] shadow-lg p-4 pt-8 rounded-lg bg-white"
         />
       </div>
+
+      {popupExpenses && (
+        <div className="absolute left-1/2 transform -translate-x-1/2 mt-2 bg-white border border-gray-300 shadow-lg rounded-lg w-[300px] md:w-[400px] p-4 z-50">
+          <h3 className="text-xl font-bold text-center text-black mb-3">
+            Expenses for {popupExpenses.date}
+          </h3>
+          <div className="max-h-[200px] overflow-y-auto">
+            {popupExpenses.expenses.map((expense, index) => (
+              <div
+                key={index}
+                className="flex justify-between border-b border-gray-200 py-2 px-2">
+                <span className="text-black">{expense.name}</span>
+                <span className="text-[#01898B] font-bold">
+                  ${expense.amount}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          <button
+            className="w-full mt-4 bg-[#01898B] hover:bg-[#016B6D] text-white font-bold py-2 rounded-lg"
+            onClick={() => setPopupExpenses(null)}>
+            Close
+          </button>
+        </div>
+      )}
 
       {isMenuOpen && (
         <div

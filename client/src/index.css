@@ -14,10 +14,21 @@
   height: 60px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   border: 2px solid black;
+  position: relative;
+  padding-left: 3px;
   padding-bottom: 40px;
-  padding-right: 30px;
+}
+
+.custom-calendar .react-calendar__tile .expense-dot {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  width: 8px;
+  height: 8px;
+  background-color: #01898b;
+  border-radius: 50%;
 }
 
 .custom-calendar .react-calendar__month-view__weekdays {
