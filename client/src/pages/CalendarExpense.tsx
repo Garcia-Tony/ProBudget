@@ -2,6 +2,10 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useData } from '../components/User';
 
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
+import '../index.css';
+
 export function CalendarExpense() {
   const { handleSignOut } = useData();
   const navigate = useNavigate();
@@ -9,6 +13,7 @@ export function CalendarExpense() {
   const [popUp, setPopUp] = useState(false);
   const [expense, setExpense] = useState(false);
   const [, setCalendar] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
 
   const handlePopUp = () => setPopUp(true);
   const closePopUp = () => setPopUp(false);
@@ -19,7 +24,9 @@ export function CalendarExpense() {
 
   return (
     <div className="relative flex-grow flex-1 pl-2 px-4">
-      <div className="flex items-center w-full justify-between space-x-4">
+      <div
+        className="flex it
+      ems-center w-full justify-between space-x-4">
         <button
           className="rounded py-2 px-1.5 bg-white hover:bg-gray-200 transition mt-6"
           onClick={toggleMenu}>
@@ -39,7 +46,7 @@ export function CalendarExpense() {
           className="size-14 max-w-[60px] max-h-[60px] mt-5 md:size-20 md:mt-4 md:max-w-[150px] md:max-h-[150px]"
         />
         <div className=" flex-1 flex justify-center">
-          <h2 className="md:text-6xl text-4xl font-bold text-center text-black ml-10 md:ml-[-10px] mr-40 mt-5 md:mt-7 md:mb-4 ">
+          <h2 className="md:text-6xl text-4xl font-bold text-center text-black ml-10 md:ml-[-10px] mr-40 mt-7 md:mt-7 md:mb-4 ">
             Calendar
           </h2>
         </div>
@@ -113,6 +120,16 @@ export function CalendarExpense() {
       </div>
 
       <hr className="my-4 border-t-2 border-[#01898B] md:mt-4" />
+
+      <div className="px-12 w-full flex justify-center items-center mt-8">
+        <Calendar
+          locale="en-US"
+          calendarType="gregory"
+          onChange={(date) => setSelectedDate(date as Date)}
+          value={selectedDate}
+          className="custom-calendar px-[-40px] w-full max-w-[100px] text-xl h-[510px] border border-[#01898B] shadow-lg p-4 pt-8 rounded-lg bg-white"
+        />
+      </div>
 
       {isMenuOpen && (
         <div

@@ -27,6 +27,8 @@
   },
   "devDependencies": {
     "@learningfuze/lfz-config": "^1.0.0",
+    "@types/fullcalendar": "^3.8.0",
+    "@types/react-calendar": "^3.9.0",
     "@typescript-eslint/eslint-plugin": "^6.3.0",
     "@typescript-eslint/parser": "^6.3.0",
     "eslint": "^8.38.0",
@@ -48,5 +50,15 @@
     "stylelint-config-standard": "^32.0.0",
     "tsx": "^4.7.0",
     "typescript": "^5.4.3"
+  },
+  "dependencies": {
+    "@fullcalendar/daygrid": "^6.1.15",
+    "@fullcalendar/react": "^6.1.15",
+    "argon2": "^0.41.1",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.13.3",
+    "react-calendar": "^5.1.0",
+    "react-router-dom": "^7.2.0"
   }
 }
