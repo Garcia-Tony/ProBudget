@@ -220,15 +220,15 @@ export function CalendarExpense() {
       </div>
 
       {popupExpenses && (
-        <div className="absolute left-1/2 transform -translate-x-1/2 mt-2 bg-white border border-gray-300 shadow-lg rounded-lg w-[400px] md:w-[400px] p-4 z-50">
-          <h3 className="text-xl font-bold text-center text-black mb-3">
+        <div className="absolute left-1/2 transform -translate-x-1/2 mt-2 md:mt-3 bg-white border border-gray-300 shadow-lg rounded-lg md:w-[1200px] w-[400px] md:w-[400px] p-4 z-50">
+          <h3 className="text-xl md:text-2xl md:pt-2 font-bold text-center text-black mb-3">
             Expenses for {popupExpenses.date}
           </h3>
           <div className="max-h-[200px] overflow-y-auto">
             {popupExpenses.expenses.map((expense, index) => (
               <div
                 key={index}
-                className="flex justify-between border-b border-gray-200 py-2 px-2">
+                className="md:text-xl flex justify-between border-b border-gray-200 py-2 px-2">
                 <span className="text-black">{expense.name}</span>
                 <span className="text-[#01898B] font-bold">
                   ${expense.amount}
@@ -238,7 +238,7 @@ export function CalendarExpense() {
           </div>
 
           <button
-            className="w-full mt-4 bg-[#01898B] hover:bg-[#016B6D] text-white font-bold py-2 rounded-lg"
+            className="w-full mt-4 bg-[#01898B] hover:bg-[#016B6D] text-white font-bold py-2 md:py-3 md:text-xl rounded-lg"
             onClick={() => setPopupExpenses(null)}>
             Close
           </button>

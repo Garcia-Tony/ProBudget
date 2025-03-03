@@ -111,31 +111,30 @@ export function NewExpense() {
               />
             </svg>
           </button>
-
-          {expense && (
-            <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-10">
-              <div className="rounded-[50px] bg-[#cbcbcb] p-6 px-6 rounded shadow-lg text-center border border-black ">
-                <h3 className="text-5xl font-bold mb-5 mt-5 text-black font-extrabold">
-                  Add New <br />
-                  Expense?
-                </h3>
-                <button
-                  className="hover:bg-[#016B6D] transition mt-6 px-18 text-4xl font-bold py-2 px-12 bg-[#067E81] text-black border border-black rounded-full"
-                  onClick={() => {
-                    navigate('/new-expense');
-                    closeExpense();
-                  }}>
-                  YES
-                </button>
-                <button
-                  className="hover:bg-[#505050] transition mt-6 px-18 text-4xl font-bold py-2 px-14 ml-4 bg-[#696969] text-black border border-black rounded-full"
-                  onClick={closeExpense}>
-                  NO
-                </button>
-              </div>
-            </div>
-          )}
         </div>
+
+        {expense && (
+          <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-10">
+            <div className="rounded-[50px] bg-[#cbcbcb] p-6 px-6 rounded shadow-lg text-center border border-black ">
+              <h3 className="md:text-6xl text-5xl font-bold mb-5 mt-5 text-black font-extrabold">
+                Add New <br />
+                Expense?
+              </h3>
+              <button
+                className="hover:bg-[#016B6D] transition md:text-5xl md:px-20 mt-6 px-18 text-4xl font-bold py-2 px-12 bg-[#067E81] text-black border border-black rounded-full"
+                onClick={() => {
+                  navigate('/new-expense');
+                }}>
+                YES
+              </button>
+              <button
+                className="hover:bg-[#505050] transition md:text-5xl md:px-20 mt-6 px-18 text-4xl font-bold py-2 px-14 ml-4 bg-[#696969] text-black border border-black rounded-full"
+                onClick={closeExpense}>
+                NO
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
       <hr className="my-4 border-t-2 border-[#01898B]" />
