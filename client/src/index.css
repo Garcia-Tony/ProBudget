@@ -27,7 +27,7 @@
   right: 30px;
   width: 8px;
   height: 8px;
-  background-color: #01898b;
+  background-color: #007678;
   border-radius: 50%;
 }
 
@@ -94,4 +94,19 @@
   color: black;
   border: none;
   outline: none;
+}
+
+.react-calendar__tile--now {
+  background: #a5d4d4 !important;
+  color: inherit !important;
+}
+
+.react-calendar__tile--active {
+  background: #01a2a5 !important;
+  color: white !important;
+}
+
+.react-calendar__tile:enabled:hover {
+  background: #8a8989;
+  color: black;
 }

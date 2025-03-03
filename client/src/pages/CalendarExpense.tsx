@@ -37,10 +37,49 @@ export function CalendarExpense() {
     return `${month}/${day}/${year}`;
   };
 
+  // Function to check if an expense recurs on a given date
+  const isRecurringExpense = (
+    expense: { dueDate: string; schedule: string },
+    date: Date
+  ) => {
+    const dueDate = new Date(expense.dueDate);
+    const current = new Date(dueDate);
+    const dateString = formatDate(date);
+
+    while (current <= date) {
+      if (formatDate(current) === dateString) return true;
+
+      switch (expense.schedule) {
+        case 'every-week':
+          current.setDate(current.getDate() + 7);
+          break;
+        case 'every-month':
+          current.setMonth(current.getMonth() + 1);
+          break;
+        case 'every-3-months':
+          current.setMonth(current.getMonth() + 3);
+          break;
+        case 'every-6-months':
+          current.setMonth(current.getMonth() + 6);
+          break;
+        case 'every-year':
+          current.setFullYear(current.getFullYear() + 1);
+          break;
+        default:
+          return false;
+      }
+    }
+    return false;
+  };
+
+  // Function to check if a date has an expense or recurring expense
   const tileContent = ({ date }: { date: Date }) => {
     const dateString = formatDate(date);
+
     const hasExpense = expenses.some(
-      (expense) => expense.dueDate === dateString
+      (expense) =>
+        formatDate(new Date(expense.dueDate)) === dateString ||
+        isRecurringExpense(expense, date)
     );
 
     return hasExpense ? (
@@ -58,8 +97,11 @@ export function CalendarExpense() {
     const dateString = formatDate(date);
 
     const expensesOnDate = expenses.filter(
-      (expense) => expense.dueDate === dateString
+      (expense) =>
+        formatDate(new Date(expense.dueDate)) === dateString ||
+        isRecurringExpense(expense, date)
     );
+
     if (expensesOnDate.length > 0) {
       setPopupExpenses({ date: dateString, expenses: expensesOnDate });
     } else {
@@ -141,8 +183,8 @@ export function CalendarExpense() {
         </div>
 
         {expense && (
-          <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-10">
-            <div className="rounded-[50px] bg-[#cbcbcb] p-6 px-6 rounded shadow-lg text-center border border-black ">
+          <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-10 z-[1000]">
+            <div className="rounded-[50px] bg-[#cbcbcb] p-6 px-6 rounded shadow-lg text-center border border-black z-[1001] ">
               <h3 className="md:text-6xl text-5xl font-bold mb-5 mt-5 text-black font-extrabold">
                 Add New <br />
                 Expense?
@@ -178,7 +220,7 @@ export function CalendarExpense() {
       </div>
 
       {popupExpenses && (
-        <div className="absolute left-1/2 transform -translate-x-1/2 mt-2 bg-white border border-gray-300 shadow-lg rounded-lg w-[300px] md:w-[400px] p-4 z-50">
+        <div className="absolute left-1/2 transform -translate-x-1/2 mt-2 bg-white border border-gray-300 shadow-lg rounded-lg w-[400px] md:w-[400px] p-4 z-50">
           <h3 className="text-xl font-bold text-center text-black mb-3">
             Expenses for {popupExpenses.date}
           </h3>
@@ -226,7 +268,7 @@ export function CalendarExpense() {
             Menu
           </h2>
           <button
-            className="md:text-4xl md:px-28 md:ml-[25px] text-2xl block text-center border border-[#01898B] rounded-full py-1 px-[54px] ml-3 mt-7 bg-[#01898B] text-white  hover:bg-[#016B6D] transition"
+            className="md:text-5xl md:px-28 md:ml-[25px] text-2xl block text-center border border-[#01898B] rounded-full py-1 md:py-2 px-[54px] ml-3 mt-7 bg-[#01898B] text-white  hover:bg-[#016B6D] transition"
             onClick={() => {
               navigate('/home');
             }}>
@@ -234,7 +276,7 @@ export function CalendarExpense() {
           </button>
 
           <button
-            className="md:text-4xl md:px-28 md:ml-[25px] text-2xl block text-center border border-[#01898B] rounded-full py-1 px-[47px] ml-3 mt-5 bg-[#01898B] text-white  hover:bg-[#016B6D] transition"
+            className="md:text-5xl md:px-[100px] md:ml-[25px] text-2xl block text-center border border-[#01898B] rounded-full py-1 md:py-2 px-[47px] ml-3 mt-5 bg-[#01898B] text-white  hover:bg-[#016B6D] transition"
             onClick={() => {
               navigate('/recurring');
             }}>
@@ -242,7 +284,7 @@ export function CalendarExpense() {
           </button>
 
           <button
-            className="md:text-4xl md:px-28 md:ml-[25px] text-2xl block text-center border border-[#01898B] rounded-full py-1 px-[55px] ml-3 mt-5 bg-[#01898B] text-white  hover:bg-[#016B6D] transition"
+            className="md:text-5xl md:px-[115px] md:ml-[25px] text-2xl block text-center border border-[#01898B] rounded-full py-1 md:py-2 px-[55px] ml-3 mt-5 bg-[#01898B] text-white  hover:bg-[#016B6D] transition"
             onClick={handlePopUp}>
             Log Out
           </button>

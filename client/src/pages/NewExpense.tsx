@@ -68,15 +68,15 @@ export function NewExpense() {
           alt="Pro Budget Logo"
           className="size-14 max-w-[60px] max-h-[60px] mt-5 md:size-20 md:mt-4 md:max-w-[150px] md:max-h-[150px]"
         />
-        <div className="flex w-full justify-start items-center md:mt-4 mt-2">
+
+        <div className="absolute right-4 md:right-6 md:top-3 top-2 md:top-[22px]">
           <button
             onClick={() => {
               handleCalendar();
               navigate('/calendar');
-            }}
-            className="ml-[243px]">
+            }}>
             <svg
-              className="mt-3.5 w-[55px] h-[50px] md:w-[60px] md:h-[60px] md:mt-[14px] text-[#01898B]"
+              className="mt-4 w-[55px] h-[50px] md:w-[60px] md:h-[60px] md:mt-[14px] text-[#01898B]"
               viewBox="0 0 24 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg">
@@ -346,7 +346,7 @@ export function NewExpense() {
             Menu
           </h2>
           <button
-            className="md:text-4xl md:px-28 md:ml-[25px] text-2xl block text-center border border-[#01898B] rounded-full py-1 px-[54px] ml-3 mt-7 bg-[#01898B] text-white  hover:bg-[#016B6D] transition"
+            className="md:text-5xl md:px-28 md:ml-[25px] text-2xl block text-center border border-[#01898B] rounded-full py-1 md:py-2 px-[54px] ml-3 mt-7 bg-[#01898B] text-white  hover:bg-[#016B6D] transition"
             onClick={() => {
               navigate('/home');
             }}>
@@ -354,7 +354,7 @@ export function NewExpense() {
           </button>
 
           <button
-            className="md:text-4xl md:px-28 md:ml-[25px] text-2xl block text-center border border-[#01898B] rounded-full py-1 px-[47px] ml-3 mt-5 bg-[#01898B] text-white  hover:bg-[#016B6D] transition"
+            className="md:text-5xl md:px-[100px] md:ml-[25px] text-2xl block text-center border border-[#01898B] rounded-full py-1 md:py-2 px-[47px] ml-3 mt-5 bg-[#01898B] text-white  hover:bg-[#016B6D] transition"
             onClick={() => {
               navigate('/recurring');
             }}>
@@ -362,7 +362,7 @@ export function NewExpense() {
           </button>
 
           <button
-            className="md:text-4xl md:px-28 md:ml-[25px] text-2xl block text-center border border-[#01898B] rounded-full py-1 px-[55px] ml-3 mt-5 bg-[#01898B] text-white  hover:bg-[#016B6D] transition"
+            className="md:text-5xl md:px-[115px] md:ml-[25px] text-2xl block text-center border border-[#01898B] rounded-full py-1 md:py-2 px-[55px] ml-3 mt-5 bg-[#01898B] text-white  hover:bg-[#016B6D] transition"
             onClick={handlePopUp}>
             Log Out
           </button>
