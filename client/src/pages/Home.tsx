@@ -136,8 +136,18 @@ export function Home() {
             <div
               key={index}
               className="mb-[-4px] md:mb-[-5px] md:text-xl h-16 md:h-20 bg-[#EFEFEF] rounded-lg shadow-md shadow-[#00000099]">
-              <div className="flex px-2 md:mt-2 mb-2 md:mb-3 pt-1">
+              <div className="flex justify-between px-2 md:mt-2 mb-2 md:mb-3 pt-1">
                 <p>{expense.name}</p>
+                <button>
+                  <svg
+                    className="md:w-[50px] md:h-[50px] w-4 h-4 mt-1 text-[#01898B]"
+                    viewBox="0 0 16 16">
+                    <path
+                      fill="000"
+                      d="M14.487333333333334 1.5126666666666666a1.75 1.75 0 0 0 -2.474666666666667 0l-0.7713333333333333 0.7713333333333333 2.474666666666667 2.474666666666667 0.7713333333333333 -0.7713333333333333a1.75 1.75 0 0 0 0 -2.474666666666667Zm-1.4786666666666666 3.953333333333333 -2.474666666666667 -2.474666666666667 -8.1 8.1a3.5 3.5 0 0 0 -0.88 1.476l-0.5333333333333333 1.79a0.5 0.5 0 0 0 0.622 0.622l1.79 -0.5333333333333333a3.5 3.5 0 0 0 1.476 -0.88L13.008666666666667 5.466666666666666Z"
+                    />
+                  </svg>
+                </button>
               </div>
               <div className="flex justify-between items-center px-2">
                 <p>Date Due: {expense.dueDate}</p>
