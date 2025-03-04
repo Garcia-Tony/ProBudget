@@ -1,29 +1,25 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useExpenses } from './ExpenseContext';
 import { useData } from '../components/User';
 
-export function Home() {
-  const { expenses, totalAmount } = useExpenses();
+export function EditExpense() {
   const { handleSignOut } = useData();
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [popUp, setPopUp] = useState(false);
   const [expense, setExpense] = useState(false);
   const [, setCalendar] = useState(false);
-  const [, setEdit] = useState(false);
 
   const handlePopUp = () => setPopUp(true);
   const closePopUp = () => setPopUp(false);
-  const handleCalendar = () => setCalendar(false);
-  const handleEdit = () => setEdit(false);
   const handleExpense = () => setExpense(true);
+  const handleCalendar = () => setCalendar(true);
   const closeExpense = () => setExpense(false);
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
 
   return (
     <div className="relative flex-grow flex-1 pl-2 px-4">
-      <div className="flex items-center w-full justify-between space-x-4">
+      <div className="flex items-center space-x-4">
         <button
           className="rounded py-2 px-1.5 bg-white hover:bg-gray-200 transition mt-6"
           onClick={toggleMenu}>
@@ -42,11 +38,6 @@ export function Home() {
           alt="Pro Budget Logo"
           className="size-14 max-w-[60px] max-h-[60px] mt-5 md:size-20 md:mt-4 md:max-w-[150px] md:max-h-[150px]"
         />
-        <div className=" flex-1 flex justify-center">
-          <h2 className="md:text-6xl text-4xl font-bold text-center text-black ml-12 md:ml-[-10px] mr-40 mt-4 md:mt-7 md:mb-4 ">
-            Expenses
-          </h2>
-        </div>
 
         <div className="absolute right-4 md:right-6 md:top-3 top-2 md:top-[22px]">
           <button
@@ -68,9 +59,9 @@ export function Home() {
             </svg>
           </button>
 
-          <button onClick={handleExpense}>
+          <button onClick={handleExpense} className="ml-auto">
             <svg
-              className="mt-4 w-12 h-12 md:w-[60px] md:h-[60px] md:mt-[14px] text-[#01898B]"
+              className="mt-4 w-12 h-12 md:w-[60px] md:h-[60px] md:mt-[-0px] text-[#01898B]"
               viewBox="0 0 24 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg">
@@ -116,57 +107,7 @@ export function Home() {
         )}
       </div>
 
-      <hr className="my-4 border-t-2 border-[#01898B] md:mt-4" />
-
-      <p className=" text-2xl text-black ml-2 md:text-3xl">
-        {expenses.length === 0 ? 'No Current Expenses' : 'Current Expenses'}
-      </p>
-
-      <div className="space-y-3 mt-3 px-[5px]">
-        {expenses.length === 0 && (
-          <>
-            <div className="">
-              <div className=" md:mb-2 md:h-20 h-16 mb-1 bg-[#EFEFEF] rounded-lg shadow-md shadow-[#00000099] border"></div>
-              <div className=" md:mb-2 md:h-20 h-16 mb-1 bg-[#EFEFEF] rounded-lg shadow-md shadow-[#00000099]"></div>
-              <div className=" md:mb-2 md:h-20 h-16 mb-1 bg-[#EFEFEF] rounded-lg shadow-md shadow-[#00000099]"></div>
-            </div>
-          </>
-        )}
-
-        {expenses.length > 0 &&
-          expenses.map((expense, index) => (
-            <div
-              key={index}
-              className="mb-[-4px] md:mb-[-5px] md:text-xl h-16 md:h-20 bg-[#EFEFEF] rounded-lg shadow-md shadow-[#00000099]">
-              <div className="flex justify-between px-2 md:mt-2 mb-2 md:mb-3 pt-1">
-                <p>{expense.name}</p>
-                <button
-                  onClick={() => {
-                    handleEdit();
-                    navigate('/edit');
-                  }}>
-                  <svg
-                    className="md:w-[50px] md:h-[50px] w-4 h-4 mt-1 text-[#01898B]"
-                    viewBox="0 0 16 16">
-                    <path
-                      fill="000"
-                      d="M14.487333333333334 1.5126666666666666a1.75 1.75 0 0 0 -2.474666666666667 0l-0.7713333333333333 0.7713333333333333 2.474666666666667 2.474666666666667 0.7713333333333333 -0.7713333333333333a1.75 1.75 0 0 0 0 -2.474666666666667Zm-1.4786666666666666 3.953333333333333 -2.474666666666667 -2.474666666666667 -8.1 8.1a3.5 3.5 0 0 0 -0.88 1.476l-0.5333333333333333 1.79a0.5 0.5 0 0 0 0.622 0.622l1.79 -0.5333333333333333a3.5 3.5 0 0 0 1.476 -0.88L13.008666666666667 5.466666666666666Z"
-                    />
-                  </svg>
-                </button>
-              </div>
-              <div className="flex justify-between items-center px-2">
-                <p>Date Due: {expense.dueDate}</p>
-                <p>${expense.amount}</p>
-              </div>
-            </div>
-          ))}
-
-        <div className="h-5 md:h-6 flex justify-between items-center px-2 font-bold">
-          <p className="text-xl md:text-2xl text-black">Total</p>
-          <p className="text-xl md:text-2xl text-black">${totalAmount}</p>
-        </div>
-      </div>
+      <hr className="my-4 border-t-2 border-[#01898B]" />
 
       {isMenuOpen && (
         <div
@@ -229,7 +170,7 @@ export function Home() {
               YES
             </button>
             <button
-              className="hover:bg-[#505050] transition md:text-5xl md:px-20 mt-6 px-18 text-4xl font-bold py-2 px-14 ml-4 bg-[#696969] text-black border border-black rounded-full"
+              className=" hover:bg-[#505050] transition md:text-5xl md:px-20 mt-6 px-18 text-4xl font-bold py-2 px-14 ml-4 bg-[#696969] text-black border border-black rounded-full"
               onClick={closePopUp}>
               NO
             </button>
