@@ -21,7 +21,7 @@ export function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/recurring" element={<RecurringExpense />} />
           <Route path="/calendar" element={<CalendarExpense />} />
-          <Route path="/edit" element={<EditExpense />} />
+          <Route path="/edit-expense" element={<EditExpense />} />
         </Routes>
       </ExpenseProvider>
     </UserProvider>

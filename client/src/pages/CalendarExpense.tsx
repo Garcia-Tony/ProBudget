@@ -37,7 +37,6 @@ export function CalendarExpense() {
     return `${month}/${day}/${year}`;
   };
 
-  // Function to check if an expense recurs on a given date
   const isRecurringExpense = (
     expense: { dueDate: string; schedule: string },
     date: Date
@@ -72,7 +71,6 @@ export function CalendarExpense() {
     return false;
   };
 
-  // Function to check if a date has an expense or recurring expense
   const tileContent = ({ date }: { date: Date }) => {
     const dateString = formatDate(date);
 

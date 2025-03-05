@@ -1,26 +1,39 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { useData } from '../components/User';
+import { useNavigate } from 'react-router-dom';
 
 export function EditExpense() {
+  const { handleSignOut } = useData();
   const [expenseName, setExpenseName] = useState('');
   const [amount, setAmount] = useState('');
   const [dueDate, setDueDate] = useState('');
-  const [, setSchedule] = useState('');
+  const [schedule, setSchedule] = useState('');
 
-  const { handleSignOut } = useData();
-  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [popUp, setPopUp] = useState(false);
   const [expense, setExpense] = useState(false);
   const [, setCalendar] = useState(false);
 
+  const navigate = useNavigate();
   const handlePopUp = () => setPopUp(true);
   const closePopUp = () => setPopUp(false);
   const handleExpense = () => setExpense(true);
   const handleCalendar = () => setCalendar(true);
   const closeExpense = () => setExpense(false);
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
+
+  useEffect(() => {
+    const storedExpense = JSON.parse(
+      localStorage.getItem('selectedExpense') || '{}'
+    );
+
+    if (Object.keys(storedExpense).length > 0) {
+      setExpenseName(storedExpense.name || '');
+      setAmount(storedExpense.amount || '');
+      setDueDate(storedExpense.dueDate || '');
+      setSchedule(storedExpense.schedule || '');
+    }
+  }, []);
 
   return (
     <div className="relative flex-grow flex-1 pl-2 px-4">
@@ -43,7 +56,6 @@ export function EditExpense() {
           alt="Pro Budget Logo"
           className="size-14 max-w-[60px] max-h-[60px] mt-5 md:size-20 md:mt-4 md:max-w-[150px] md:max-h-[150px]"
         />
-
         <div className="absolute right-4 md:right-6 md:top-3 top-2 md:top-[22px]">
           <button
             onClick={() => {
@@ -186,6 +198,7 @@ export function EditExpense() {
                 name="Schedule"
                 value="every-week"
                 className="form-radio text-[#01898B] md:w-4 md:h-4"
+                checked={schedule === 'every-week'}
                 onChange={(e) => setSchedule(e.target.value)}
               />
               <span
@@ -202,6 +215,7 @@ export function EditExpense() {
                 value="every-month"
                 className="form-radio text-[#01898B] md:w-4 md:h-4"
                 required
+                checked={schedule === 'every-month'}
                 onChange={(e) => setSchedule(e.target.value)}
               />
               <span
@@ -218,6 +232,7 @@ export function EditExpense() {
                 value="every-3-months"
                 className="form-radio text-[#01898B] md:w-4 md:h-4"
                 required
+                checked={schedule === 'every-3-months'}
                 onChange={(e) => setSchedule(e.target.value)}
               />
               <span
@@ -234,6 +249,7 @@ export function EditExpense() {
                 value="every-6-months"
                 className="form-radio text-[#01898B] md:w-4 md:h-4"
                 required
+                checked={schedule === 'every-6-months'}
                 onChange={(e) => setSchedule(e.target.value)}
               />
               <span
@@ -250,6 +266,7 @@ export function EditExpense() {
                 value="every-year"
                 className="form-radio text-[#01898B] md:w-4 md:h-4"
                 required
+                checked={schedule === 'every-year'}
                 onChange={(e) => setSchedule(e.target.value)}
               />
               <span

@@ -6,17 +6,15 @@ import { useData } from '../components/User';
 export function Home() {
   const { expenses, totalAmount } = useExpenses();
   const { handleSignOut } = useData();
-  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [popUp, setPopUp] = useState(false);
   const [expense, setExpense] = useState(false);
   const [, setCalendar] = useState(false);
-  const [, setEdit] = useState(false);
+  const navigate = useNavigate();
 
   const handlePopUp = () => setPopUp(true);
   const closePopUp = () => setPopUp(false);
   const handleCalendar = () => setCalendar(false);
-  const handleEdit = () => setEdit(false);
   const handleExpense = () => setExpense(true);
   const closeExpense = () => setExpense(false);
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
@@ -142,8 +140,11 @@ export function Home() {
                 <p>{expense.name}</p>
                 <button
                   onClick={() => {
-                    handleEdit();
-                    navigate('/edit');
+                    localStorage.setItem(
+                      'selectedExpense',
+                      JSON.stringify(expense)
+                    );
+                    navigate('/edit-expense', { state: { expense } });
                   }}>
                   <svg
                     className="md:w-[50px] md:h-[50px] w-4 h-4 mt-1 text-[#01898B]"
