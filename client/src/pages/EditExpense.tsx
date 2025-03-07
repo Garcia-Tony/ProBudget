@@ -1,20 +1,21 @@
 import { useEffect, useState } from 'react';
-import { useData } from '../components/User';
 import { useNavigate } from 'react-router-dom';
+import { useData } from '../components/User';
+import { useExpenses } from './ExpenseContext';
 
 export function EditExpense() {
+  const { selectedExpense, editExpense } = useExpenses();
   const { handleSignOut } = useData();
   const [expenseName, setExpenseName] = useState('');
   const [amount, setAmount] = useState('');
   const [dueDate, setDueDate] = useState('');
   const [schedule, setSchedule] = useState('');
-
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [popUp, setPopUp] = useState(false);
   const [expense, setExpense] = useState(false);
   const [, setCalendar] = useState(false);
-
   const navigate = useNavigate();
+
   const handlePopUp = () => setPopUp(true);
   const closePopUp = () => setPopUp(false);
   const handleExpense = () => setExpense(true);
@@ -23,17 +24,49 @@ export function EditExpense() {
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
 
   useEffect(() => {
-    const storedExpense = JSON.parse(
-      localStorage.getItem('selectedExpense') || '{}'
-    );
-
-    if (Object.keys(storedExpense).length > 0) {
-      setExpenseName(storedExpense.name || '');
-      setAmount(storedExpense.amount || '');
-      setDueDate(storedExpense.dueDate || '');
-      setSchedule(storedExpense.schedule || '');
+    if (selectedExpense) {
+      setExpenseName(selectedExpense.name);
+      setAmount(selectedExpense.amount);
+      setDueDate(selectedExpense.dueDate);
+      setSchedule(selectedExpense.schedule);
     }
-  }, []);
+  }, [selectedExpense]);
+
+  if (!selectedExpense) {
+    return (
+      <p className="text-center text-3xl font-bold text-red-500">
+        No expense selected for editing.
+      </p>
+    );
+  }
+
+  const handleSave = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!expenseName || !amount || !dueDate || !schedule) {
+      alert('Please fill in all required fields.');
+      return;
+    }
+
+    const datePattern = /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/;
+    if (!dueDate.match(datePattern)) {
+      alert('Invalid date format! Please enter the date in MM/DD/YYYY format.');
+      return;
+    }
+
+    const updatedExpense = {
+      ...selectedExpense,
+      name: expenseName,
+      amount: amount,
+      dueDate: dueDate,
+      schedule: schedule,
+    };
+
+    editExpense(updatedExpense);
+
+    alert('Expense updated successfully!');
+    navigate('/home');
+  };
 
   return (
     <div className="relative flex-grow flex-1 pl-2 px-4">
@@ -132,7 +165,7 @@ export function EditExpense() {
         Edit Expense
       </h2>
 
-      <form>
+      <form onSubmit={handleSave}>
         <label className="block">
           <span
             className="ml-1 text-2xl md:text-4xl text-black"

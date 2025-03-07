@@ -1,23 +1,45 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useExpenses } from './ExpenseContext';
+import { Expense, useExpenses } from './ExpenseContext';
 import { useData } from '../components/User';
 
 export function Home() {
-  const { expenses, totalAmount } = useExpenses();
+  const { user } = useData();
+  const { expenses, totalAmount, setSelectedExpense } = useExpenses();
   const { handleSignOut } = useData();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [popUp, setPopUp] = useState(false);
   const [expense, setExpense] = useState(false);
+  const [, setStoredExpenses] = useState<Expense[]>([]);
   const [, setCalendar] = useState(false);
   const navigate = useNavigate();
 
   const handlePopUp = () => setPopUp(true);
   const closePopUp = () => setPopUp(false);
   const handleCalendar = () => setCalendar(false);
-  const handleExpense = () => setExpense(true);
+  const handleExpense = () => setExpense((prev) => !prev);
   const closeExpense = () => setExpense(false);
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
+
+  const handleEditClick = (expense: Expense) => {
+    console.log('Editing Expense:', expense);
+    setSelectedExpense(expense);
+    navigate('/edit-expense');
+  };
+
+  useEffect(() => {
+    if (!user || !user.userId) {
+      console.error('Home.tsx: Cannot find user.');
+      return;
+    }
+
+    console.log('Home.tsx: User found:', user);
+
+    const savedExpenses = localStorage.getItem(`expenses_${user.userId}`);
+    if (savedExpenses) {
+      setStoredExpenses(JSON.parse(savedExpenses));
+    }
+  }, [user, expenses]);
 
   return (
     <div className="relative flex-grow flex-1 pl-2 px-4">
@@ -132,19 +154,15 @@ export function Home() {
         )}
 
         {expenses.length > 0 &&
-          expenses.map((expense, index) => (
+          expenses.map((expense) => (
             <div
-              key={index}
+              key={expense.id}
               className="mb-[-4px] md:mb-[-5px] md:text-xl h-16 md:h-20 bg-[#EFEFEF] rounded-lg shadow-md shadow-[#00000099]">
               <div className="flex justify-between px-2 md:mt-2 mb-2 md:mb-3 pt-1">
                 <p>{expense.name}</p>
                 <button
                   onClick={() => {
-                    localStorage.setItem(
-                      'selectedExpense',
-                      JSON.stringify(expense)
-                    );
-                    navigate('/edit-expense', { state: { expense } });
+                    handleEditClick(expense);
                   }}>
                   <svg
                     className="md:w-[50px] md:h-[50px] w-4 h-4 mt-1 text-[#01898B]"
