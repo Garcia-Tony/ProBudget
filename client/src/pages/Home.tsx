@@ -165,7 +165,7 @@ export function Home() {
                     handleEditClick(expense);
                   }}>
                   <svg
-                    className="md:w-[50px] md:h-[50px] w-4 h-4 mt-1 text-[#01898B]"
+                    className="md:w-[25px] md:h-[25px] w-4 h-4 mt-1 text-[#01898B]"
                     viewBox="0 0 16 16">
                     <path
                       fill="000"
