@@ -17,10 +17,12 @@ export function EditExpense() {
   const navigate = useNavigate();
   const [save, setSave] = useState(false);
   const [, setCancel] = useState(false);
+  const [remove, setRemove] = useState(false);
 
   const handlePopUp = () => setPopUp(true);
   const closePopUp = () => setPopUp(false);
   const handleExpense = () => setExpense(true);
+  const handleDelete = () => setRemove(true);
   const handleCalendar = () => setCalendar(true);
   const closeExpense = () => setExpense(false);
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
@@ -93,16 +95,18 @@ export function EditExpense() {
         />
 
         <div className="absolute right-4 md:right-6 md:top-3 top-2 md:top-[22px] flex">
-          <svg
-            className="mt-4 w-[55px] h-[50px] md:w-[60px] md:h-[60px] md:mt-[14px] text-[#01898B]"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M7 4a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2h4a1 1 0 1 1 0 2h-1.069l-.867 12.142A2 2 0 0 1 17.069 22H6.93a2 2 0 0 1-1.995-1.858L4.07 8H3a1 1 0 0 1 0-2h4V4zm2 2h6V4H9v2zM6.074 8l.857 12H17.07l.857-12H6.074zM10 10a1 1 0 0 1 1 1v6a1 1 0 1 1-2 0v-6a1 1 0 0 1 1-1zm4 0a1 1 0 0 1 1 1v6a1 1 0 1 1-2 0v-6a1 1 0 0 1 1-1z"
-              fill="currentColor"
-            />
-          </svg>
+          <button onClick={handleDelete}>
+            <svg
+              className="mt-4 w-[50px] h-[50px] md:w-[60px] md:h-[60px] md:mt-[14px] text-[#01898B]"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M7 4a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2h4a1 1 0 1 1 0 2h-1.069l-.867 12.142A2 2 0 0 1 17.069 22H6.93a2 2 0 0 1-1.995-1.858L4.07 8H3a1 1 0 0 1 0-2h4V4zm2 2h6V4H9v2zM6.074 8l.857 12H17.07l.857-12H6.074zM10 10a1 1 0 0 1 1 1v6a1 1 0 1 1-2 0v-6a1 1 0 0 1 1-1zm4 0a1 1 0 0 1 1 1v6a1 1 0 1 1-2 0v-6a1 1 0 0 1 1-1z"
+                fill="currentColor"
+              />
+            </svg>
+          </button>
 
           <button
             onClick={() => {
@@ -166,6 +170,17 @@ export function EditExpense() {
                 onClick={closeExpense}>
                 NO
               </button>
+            </div>
+          </div>
+        )}
+
+        {remove && (
+          <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-10">
+            <div className="rounded-[50px] bg-[#cbcbcb] p-6 px-6 rounded shadow-lg text-center border border-black ">
+              <h3 className="md:text-6xl text-5xl font-bold mb-5 mt-5 text-black font-extrabold">
+                Delete <br />
+                Expense?
+              </h3>
             </div>
           </div>
         )}
