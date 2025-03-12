@@ -181,6 +181,12 @@ export function EditExpense() {
                 Delete <br />
                 Expense?
               </h3>
+              <button className="hover:bg-[#016B6D] transition md:text-5xl md:px-20 mt-6 px-18 text-4xl font-bold py-2 px-12 bg-[#067E81] text-black border border-black rounded-full">
+                YES
+              </button>
+              <button className="hover:bg-[#505050] transition md:text-5xl md:px-20 mt-6 px-18 text-4xl font-bold py-2 px-14 ml-4 bg-[#696969] text-black border border-black rounded-full">
+                NO
+              </button>
             </div>
           </div>
         )}
