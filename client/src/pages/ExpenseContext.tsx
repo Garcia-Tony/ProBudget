@@ -22,7 +22,7 @@ interface ExpenseContextType {
   selectedExpense: Expense | null;
   setSelectedExpense: (expense: Expense | null) => void;
   totalAmount: number;
-  deleteExpense: (id: string) => void; // Added deleteExpense
+  deleteExpense: (id: string) => void;
 }
 
 interface ExpenseProviderProps {
@@ -108,7 +108,7 @@ export const ExpenseProvider: React.FC<ExpenseProviderProps> = ({
         selectedExpense,
         setSelectedExpense,
         totalAmount,
-        deleteExpense, // Ensure deleteExpense is provided here
+        deleteExpense,
       }}>
       {children}
     </ExpenseContext.Provider>

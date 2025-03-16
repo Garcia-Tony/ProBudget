@@ -92,7 +92,7 @@ export function RegistrationForm() {
         <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-10">
           <div className="md:px-8 md:py-8 bg-[#cbcbcb] py-5 px-6 p-6 rounded shadow-lg text-center border border-black rounded-[50px] ">
             <h3 className="md:text-[50px] text-[44px] font-bold text-black mt-1">
-              Account <br /> Created
+              Account <br /> Created!
             </h3>
 
             <button

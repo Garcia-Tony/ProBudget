@@ -85,10 +85,7 @@ app.post('/api/auth/log-in', async (req, res, next) => {
 
     const token = jwt.sign(payload, hashKey);
 
-    res.status(200).json({
-      user: payload,
-      token,
-    });
+    res.status(200).json({ user: payload, token });
   } catch (err) {
     next(err);
   }
