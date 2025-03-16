@@ -4,7 +4,7 @@ import { useData } from '../components/User';
 import { useExpenses } from './ExpenseContext';
 
 export function EditExpense() {
-  const { selectedExpense, editExpense } = useExpenses();
+  const { selectedExpense, editExpense, deleteExpense } = useExpenses();
   const { handleSignOut } = useData();
   const [expenseName, setExpenseName] = useState('');
   const [amount, setAmount] = useState('');
@@ -21,9 +21,7 @@ export function EditExpense() {
 
   const handlePopUp = () => setPopUp(true);
   const closePopUp = () => setPopUp(false);
-  const closeDelete = () => setRemove(false);
   const handleExpense = () => setExpense(true);
-  const handleDelete = () => setRemove(true);
   const handleCalendar = () => setCalendar(true);
   const closeExpense = () => setExpense(false);
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
@@ -69,8 +67,21 @@ export function EditExpense() {
     };
 
     editExpense(updatedExpense);
-
     setSave(true);
+  };
+
+  const handleDelete = () => {
+    if (selectedExpense) {
+      setRemove(true);
+    }
+  };
+
+  const handleDeleteConfirm = () => {
+    if (selectedExpense) {
+      deleteExpense(selectedExpense.id);
+      setRemove(false);
+      navigate('/home');
+    }
   };
 
   return (
@@ -174,25 +185,6 @@ export function EditExpense() {
             </div>
           </div>
         )}
-
-        {remove && (
-          <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-10">
-            <div className="rounded-[50px] bg-[#cbcbcb] p-6 px-6 rounded shadow-lg text-center border border-black ">
-              <h3 className="md:text-6xl text-5xl font-bold mb-5 mt-5 text-black font-extrabold">
-                Delete <br />
-                Expense?
-              </h3>
-              <button className="hover:bg-[#016B6D] transition md:text-5xl md:px-20 mt-6 px-18 text-4xl font-bold py-2 px-12 bg-[#067E81] text-black border border-black rounded-full">
-                YES
-              </button>
-              <button
-                className="hover:bg-[#505050] transition md:text-5xl md:px-20 mt-6 px-18 text-4xl font-bold py-2 px-14 ml-4 bg-[#696969] text-black border border-black rounded-full"
-                onClick={closeDelete}>
-                NO
-              </button>
-            </div>
-          </div>
-        )}
       </div>
 
       <hr className="my-4 border-t-2 border-[#01898B]" />
@@ -261,6 +253,7 @@ export function EditExpense() {
             style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)' }}>
             Schedule
           </span>
+          {/* Radio buttons for schedule */}
           <div className=" flex flex-col md:flex-row md:space-x-36 md:text-2xl md:items-center mt-2 pt-2 bg-[#E1E0E0] rounded-lg shadow-md shadow-gray-500 p-2">
             <label className="mt-[-2px] md:mt-1 md:mb-1 flex items-center space-x-2">
               <input
@@ -391,6 +384,34 @@ export function EditExpense() {
         </div>
       )}
 
+      <button
+        className="hover:bg-[#B21F1F] transition drop-shadow-xl mt-6 px-[50px] md:px-[275px] ml-6 text-4xl font-bold py-1 md:py-2 md:text-5xl px-12 bg-[#D32F2F] text-black border rounded-3xl"
+        style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)' }}
+        onClick={() => setRemove(true)}>
+        Delete
+      </button>
+
+      {remove && (
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-10">
+          <div className="rounded-[50px] bg-[#cbcbcb] p-6 px-6 rounded shadow-lg text-center border border-black ">
+            <h3 className="md:text-6xl text-5xl font-bold mb-5 mt-5 text-black font-extrabold">
+              Delete <br />
+              Expense?
+            </h3>
+            <button
+              className="hover:bg-[#016B6D] transition md:text-5xl md:px-20 mt-6 px-18 text-4xl font-bold py-2 px-12 bg-[#067E81] text-black border border-black rounded-full"
+              onClick={handleDeleteConfirm}>
+              YES
+            </button>
+            <button
+              className="hover:bg-[#505050] transition md:text-5xl md:px-20 mt-6 px-18 text-4xl font-bold py-2 px-14 ml-4 bg-[#696969] text-black border border-black rounded-full"
+              onClick={() => setRemove(false)}>
+              NO
+            </button>
+          </div>
+        </div>
+      )}
+
       {isMenuOpen && (
         <div
           className={`absolute top-0 left-0 h-screen w-64 bg-white shadow-md border transition-all transform ease-in-out
@@ -452,7 +473,7 @@ export function EditExpense() {
               YES
             </button>
             <button
-              className=" hover:bg-[#505050] transition md:text-5xl md:px-20 mt-6 px-18 text-4xl font-bold py-2 px-14 ml-4 bg-[#696969] text-black border border-black rounded-full"
+              className="hover:bg-[#505050] transition md:text-5xl md:px-20 mt-6 px-18 text-4xl font-bold py-2 px-14 ml-4 bg-[#696969] text-black border border-black rounded-full"
               onClick={closePopUp}>
               NO
             </button>

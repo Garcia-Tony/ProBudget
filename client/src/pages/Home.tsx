@@ -23,6 +23,7 @@ export function Home() {
 
   const handleEditClick = (expense: Expense) => {
     console.log('Editing Expense:', expense);
+    localStorage.setItem('selectedExpense', JSON.stringify(expense));
     setSelectedExpense(expense);
     navigate('/edit-expense');
   };

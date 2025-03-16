@@ -197,6 +197,40 @@ app.get('/api/user-accessibility', authMiddleware, async (req, res, next) => {
   }
 });
 
+app.delete(
+  '/api/expenses/:expenseId',
+  authMiddleware,
+  async (req, res, next) => {
+    try {
+      const expenseId = Number(req.params.expenseId);
+      if (!Number.isInteger(expenseId) || expenseId < 1) {
+        throw new ClientError(400, 'expenseId must be a positive integer');
+      }
+
+      const sql = `
+      DELETE FROM "expenses"
+      WHERE "expenseId" = $1 AND "userId" = $2
+      RETURNING *;
+    `;
+
+      const params = [expenseId, req.user?.userId];
+      const result = await db.query(sql, params);
+      const [expense] = result.rows;
+
+      if (!expense) {
+        throw new ClientError(
+          404,
+          `No expense found with expenseId ${expenseId}`
+        );
+      }
+
+      res.status(204).send();
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
 app.put('/api/expenses/:expenseId', authMiddleware, async (req, res, next) => {
   try {
     const expenseId = Number(req.params.expenseId);
