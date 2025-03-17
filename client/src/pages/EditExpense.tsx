@@ -115,7 +115,7 @@ export function EditExpense() {
         <div className="absolute right-4 md:right-6 md:top-3 top-2 md:top-[22px] flex">
           <button onClick={handleDelete}>
             <svg
-              className="mt-4 w-[50px] h-[50px] md:w-[60px] md:h-[60px] md:mt-[14px] text-[#01898B]"
+              className="md:mt-[2px] mt-[12px] w-[50px] h-[50px] md:w-[60px] md:h-[60px] md:mt-[14px] text-[#01898B]"
               viewBox="0 0 24 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg">
@@ -132,7 +132,7 @@ export function EditExpense() {
               navigate('/calendar');
             }}>
             <svg
-              className="mt-4 w-[55px] h-[50px] md:w-[60px] md:h-[60px] md:mt-[14px] text-[#01898B]"
+              className="md:mt-[5px] mt-4 w-[55px] h-[50px] md:w-[60px] md:h-[60px] md:mt-[14px] text-[#01898B]"
               viewBox="0 0 24 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg">
