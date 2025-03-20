@@ -66,7 +66,6 @@ export function EditExpense() {
     };
 
     editExpense(updatedExpense);
-
     setSave(true);
   };
 
@@ -91,14 +90,15 @@ export function EditExpense() {
           alt="Pro Budget Logo"
           className="size-14 max-w-[60px] max-h-[60px] mt-5 md:size-20 md:mt-4 md:max-w-[150px] md:max-h-[150px]"
         />
-        <div className="absolute right-4 md:right-6 md:top-3 top-2 md:top-[22px]">
+
+        <div className="absolute right-4 md:right-6 md:top-3 top-2 md:top-[22px] flex">
           <button
             onClick={() => {
               handleCalendar();
               navigate('/calendar');
             }}>
             <svg
-              className="mt-4 w-[55px] h-[50px] md:w-[60px] md:h-[60px] md:mt-[14px] text-[#01898B]"
+              className="md:mt-[5px] mt-4 w-[55px] h-[50px] md:w-[60px] md:h-[60px] md:mt-[14px] text-[#01898B]"
               viewBox="0 0 24 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg">
@@ -343,7 +343,7 @@ export function EditExpense() {
         <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-10">
           <div className="md:px-8 md:py-8 bg-[#cbcbcb] py-5 px-6 p-6 rounded shadow-lg text-center border border-black rounded-[50px] ">
             <h3 className="md:text-[50px] text-[44px] font-bold text-black mt-1">
-              Expense <br /> Updated
+              Expense <br /> Updated!
             </h3>
 
             <button
@@ -416,7 +416,7 @@ export function EditExpense() {
               YES
             </button>
             <button
-              className=" hover:bg-[#505050] transition md:text-5xl md:px-20 mt-6 px-18 text-4xl font-bold py-2 px-14 ml-4 bg-[#696969] text-black border border-black rounded-full"
+              className="hover:bg-[#505050] transition md:text-5xl md:px-20 mt-6 px-18 text-4xl font-bold py-2 px-14 ml-4 bg-[#696969] text-black border border-black rounded-full"
               onClick={closePopUp}>
               NO
             </button>
