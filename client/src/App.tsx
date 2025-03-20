@@ -1,4 +1,4 @@
-import { Route, Routes, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { AuthPage } from './pages/SwitchPage';
 import { UserProvider } from './components/UserContext';
 import { RegistrationForm } from './pages/SignUp';
@@ -13,7 +13,7 @@ export function App() {
     <UserProvider>
       <ExpenseProvider>
         <Routes>
-          <Route index element={<RegistrationForm />} />
+          <Route path="/" element={<RegistrationForm />} />
           <Route path="/sign-up" element={<Navigate to="/" />} />
           <Route path="/log-in" element={<AuthPage mode="log-in" />} />
           <Route path="/new-expense" element={<NewExpense />} />

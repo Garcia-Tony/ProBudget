@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import { useData } from '../components/User';
 import { useExpenses } from './ExpenseContext';
 
 import Calendar from 'react-calendar';
+
 import 'react-calendar/dist/Calendar.css';
 import '../index.css';
 import { Value } from 'react-calendar/src/shared/types.js';
