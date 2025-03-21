@@ -210,7 +210,7 @@ export function CalendarExpense() {
       <div className="px-12 w-full flex justify-center items-center mt-8">
         <Calendar
           locale="en-US"
-          calendarType="ISO 8601"
+          calendarType="gregory"
           onChange={handleDateClick}
           value={selectedDate}
           tileContent={tileContent}
