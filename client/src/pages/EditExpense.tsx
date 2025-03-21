@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useData } from '../components/User';
-import { useExpenses } from './ExpenseContext';
+import { useData } from '../components/User.ts';
+import { useExpenses } from './ExpenseContext.tsx';
 
 export function EditExpense() {
   const { selectedExpense, editExpense } = useExpenses();
@@ -58,7 +58,7 @@ export function EditExpense() {
     }
 
     const updatedExpense = {
-      ...selectedExpense,
+      id: selectedExpense.id,
       name: expenseName,
       amount: amount,
       dueDate: dueDate,

@@ -1,13 +1,13 @@
 import { Route, Routes, Navigate } from 'react-router-dom';
-import { AuthPage } from './pages/SwitchPage';
-import { UserProvider } from './components/UserContext';
-import { RegistrationForm } from './pages/SignUp';
-import { Home } from './pages/Home';
-import { NewExpense } from './pages/NewExpense';
-import { ExpenseProvider } from './pages/ExpenseContext';
-import { RecurringExpense } from './pages/RecurringExpense';
-import { CalendarExpense } from './pages/CalendarExpense';
-import { EditExpense } from './pages/EditExpense';
+import { AuthPage } from './pages/SwitchPage.tsx';
+import { UserProvider } from './components/UserContext.tsx';
+import { RegistrationForm } from './pages/SignUp.tsx';
+import { Home } from './pages/Home.tsx';
+import { NewExpense } from './pages/NewExpense.tsx';
+import { ExpenseProvider } from './pages/ExpenseContext.tsx';
+import { RecurringExpense } from './pages/RecurringExpense.tsx';
+import { CalendarExpense } from './pages/CalendarExpense.tsx';
+import { EditExpense } from './pages/EditExpense.tsx';
 
 export function App() {
   return (

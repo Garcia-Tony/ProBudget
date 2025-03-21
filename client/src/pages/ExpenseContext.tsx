@@ -5,7 +5,7 @@ import React, {
   useEffect,
   ReactNode,
 } from 'react';
-import { useData } from '../components/User';
+import { useData } from '../components/User.ts';
 
 export interface Expense {
   id: string;

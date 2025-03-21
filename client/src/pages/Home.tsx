@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Expense, useExpenses } from './ExpenseContext';
-import { useData } from '../components/User';
+import { Expense, useExpenses } from './ExpenseContext.tsx';
+import { useData } from '../components/User.ts';
 
 export function Home() {
   const { user } = useData();

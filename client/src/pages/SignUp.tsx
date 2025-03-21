@@ -1,6 +1,6 @@
 import { type FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User } from '../components/UserContext';
+import { User } from '../components/UserContext.tsx';
 
 export function RegistrationForm() {
   const [isLoading, setIsLoading] = useState(false);

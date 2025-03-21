@@ -12,7 +12,7 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "noEmit": false,
+    "noEmit": true,
     "jsx": "react-jsx"
   },
   "include": ["."]
