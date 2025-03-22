@@ -85,10 +85,7 @@ app.post('/api/auth/log-in', async (req, res, next) => {
 
     const token = jwt.sign(payload, hashKey);
 
-    res.status(200).json({
-      user: payload,
-      token,
-    });
+    res.status(200).json({ user: payload, token });
   } catch (err) {
     next(err);
   }
@@ -192,6 +189,82 @@ app.get('/api/user-accessibility', authMiddleware, async (req, res, next) => {
       throw new ClientError(404, 'No access data found for this user');
     }
     res.json(result.rows);
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.delete(
+  '/api/expenses/:expenseId',
+  authMiddleware,
+  async (req, res, next) => {
+    try {
+      const expenseId = Number(req.params.expenseId);
+      if (!Number.isInteger(expenseId) || expenseId < 1) {
+        throw new ClientError(400, 'expenseId must be a positive integer');
+      }
+
+      const sql = `
+      DELETE FROM "expenses"
+      WHERE "expenseId" = $1 AND "userId" = $2
+      RETURNING *;
+    `;
+
+      const params = [expenseId, req.user?.userId];
+      const result = await db.query(sql, params);
+      const [expense] = result.rows;
+
+      if (!expense) {
+        throw new ClientError(
+          404,
+          `No expense found with expenseId ${expenseId}`
+        );
+      }
+
+      res.status(204).send();
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
+app.put('/api/expenses/:expenseId', authMiddleware, async (req, res, next) => {
+  try {
+    const expenseId = Number(req.params.expenseId);
+    if (!Number.isInteger(expenseId) || expenseId < 1) {
+      throw new ClientError(400, 'expenseId must be a positive integer');
+    }
+
+    const { description, amount, category } = req.body;
+    if (!description || !amount || !category) {
+      throw new ClientError(
+        400,
+        'description, amount, and category are required'
+      );
+    }
+
+    const sql = `
+      UPDATE "expenses"
+      SET "description" = $1,
+          "amount" = $2,
+          "category" = $3,
+          "updatedAt" = NOW()
+      WHERE "expenseId" = $4 AND "userId" = $5
+      RETURNING *;
+    `;
+
+    const params = [description, amount, category, expenseId, req.user?.userId];
+    const result = await db.query(sql, params);
+    const [expense] = result.rows;
+
+    if (!expense) {
+      throw new ClientError(
+        404,
+        `No expense found with expenseId ${expenseId}`
+      );
+    }
+
+    res.json(expense);
   } catch (err) {
     next(err);
   }

@@ -1,11 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import { useData } from '../components/User';
 import { useExpenses } from './ExpenseContext';
 
 import Calendar from 'react-calendar';
-
 import 'react-calendar/dist/Calendar.css';
 import '../index.css';
 import { Value } from 'react-calendar/src/shared/types.js';
@@ -39,7 +37,6 @@ export function CalendarExpense() {
     return `${month}/${day}/${year}`;
   };
 
-  // Function to check if an expense recurs on a given date
   const isRecurringExpense = (
     expense: { dueDate: string; schedule: string },
     date: Date
@@ -74,7 +71,6 @@ export function CalendarExpense() {
     return false;
   };
 
-  // Function to check if a date has an expense or recurring expense
   const tileContent = ({ date }: { date: Date }) => {
     const dateString = formatDate(date);
 
@@ -222,7 +218,7 @@ export function CalendarExpense() {
       </div>
 
       {popupExpenses && (
-        <div className="absolute left-1/2 transform -translate-x-1/2 mt-2 md:mt-3 bg-white border border-gray-300 shadow-lg rounded-lg md:w-[1190px] w-[400px] md:w-[400px] p-4 z-50">
+        <div className="absolute left-1/2 transform -translate-x-1/2 mt-2 md:mt-3 bg-white border border-gray-300 shadow-lg rounded-lg md:w-[1200px] w-[400px] md:w-[400px] p-4 z-50">
           <h3 className="text-xl md:text-2xl md:pt-2 font-bold text-center text-black mb-3">
             Expenses for {popupExpenses.date}
           </h3>

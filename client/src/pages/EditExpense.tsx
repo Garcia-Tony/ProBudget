@@ -4,7 +4,7 @@ import { useData } from '../components/User';
 import { useExpenses } from './ExpenseContext';
 
 export function EditExpense() {
-  const { selectedExpense, editExpense } = useExpenses();
+  const { selectedExpense, editExpense, deleteExpense } = useExpenses();
   const { handleSignOut } = useData();
   const [expenseName, setExpenseName] = useState('');
   const [amount, setAmount] = useState('');
@@ -17,6 +17,8 @@ export function EditExpense() {
   const navigate = useNavigate();
   const [save, setSave] = useState(false);
   const [, setCancel] = useState(false);
+  const [remove, setRemove] = useState(false);
+  const [confirm, setConfirm] = useState(false);
 
   const handlePopUp = () => setPopUp(true);
   const closePopUp = () => setPopUp(false);
@@ -66,8 +68,26 @@ export function EditExpense() {
     };
 
     editExpense(updatedExpense);
-
     setSave(true);
+  };
+
+  const handleDelete = () => {
+    if (selectedExpense) {
+      setRemove(true);
+    }
+  };
+
+  const handleDeleteConfirm = () => {
+    if (selectedExpense) {
+      deleteExpense(selectedExpense.id);
+      setRemove(false);
+      setConfirm(true);
+    }
+  };
+
+  const handleConfirm = () => {
+    setConfirm(false);
+    navigate('/home');
   };
 
   return (
@@ -91,14 +111,28 @@ export function EditExpense() {
           alt="Pro Budget Logo"
           className="size-14 max-w-[60px] max-h-[60px] mt-5 md:size-20 md:mt-4 md:max-w-[150px] md:max-h-[150px]"
         />
-        <div className="absolute right-4 md:right-6 md:top-3 top-2 md:top-[22px]">
+
+        <div className="absolute right-4 md:right-6 md:top-3 top-2 md:top-[22px] flex">
+          <button onClick={handleDelete}>
+            <svg
+              className="md:mt-[2px] mt-[12px] w-[50px] h-[50px] md:w-[60px] md:h-[60px] md:mt-[14px] text-[#01898B]"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M7 4a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2h4a1 1 0 1 1 0 2h-1.069l-.867 12.142A2 2 0 0 1 17.069 22H6.93a2 2 0 0 1-1.995-1.858L4.07 8H3a1 1 0 0 1 0-2h4V4zm2 2h6V4H9v2zM6.074 8l.857 12H17.07l.857-12H6.074zM10 10a1 1 0 0 1 1 1v6a1 1 0 1 1-2 0v-6a1 1 0 0 1 1-1zm4 0a1 1 0 0 1 1 1v6a1 1 0 1 1-2 0v-6a1 1 0 0 1 1-1z"
+                fill="currentColor"
+              />
+            </svg>
+          </button>
+
           <button
             onClick={() => {
               handleCalendar();
               navigate('/calendar');
             }}>
             <svg
-              className="mt-4 w-[55px] h-[50px] md:w-[60px] md:h-[60px] md:mt-[14px] text-[#01898B]"
+              className="md:mt-[5px] mt-4 w-[55px] h-[50px] md:w-[60px] md:h-[60px] md:mt-[14px] text-[#01898B]"
               viewBox="0 0 24 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg">
@@ -343,12 +377,56 @@ export function EditExpense() {
         <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-10">
           <div className="md:px-8 md:py-8 bg-[#cbcbcb] py-5 px-6 p-6 rounded shadow-lg text-center border border-black rounded-[50px] ">
             <h3 className="md:text-[50px] text-[44px] font-bold text-black mt-1">
-              Expense <br /> Updated
+              Expense <br /> Updated!
             </h3>
 
             <button
               className="hover:bg-[#016B6D] transition md:px-36 md:py-3 font-bold mt-6 px-28 text-4xl py-2 bg-[#067E81] text-black border border-black rounded-full"
               onClick={() => navigate('/home')}>
+              OK
+            </button>
+          </div>
+        </div>
+      )}
+
+      <button
+        className="hover:bg-[#B21F1F] transition drop-shadow-xl mt-6 px-[50px] md:px-[275px] ml-6 text-4xl font-bold py-1 md:py-2 md:text-5xl px-12 bg-[#D32F2F] text-black border rounded-3xl"
+        style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)' }}
+        onClick={() => setRemove(true)}>
+        Delete
+      </button>
+
+      {remove && (
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-10">
+          <div className="rounded-[50px] bg-[#cbcbcb] p-6 px-6 rounded shadow-lg text-center border border-black ">
+            <h3 className="md:text-6xl text-5xl font-bold mb-5 mt-5 text-black font-extrabold">
+              Delete <br />
+              Expense?
+            </h3>
+            <button
+              className="hover:bg-[#016B6D] transition md:text-5xl md:px-20 mt-6 px-18 text-4xl font-bold py-2 px-12 bg-[#067E81] text-black border border-black rounded-full"
+              onClick={handleDeleteConfirm}>
+              YES
+            </button>
+            <button
+              className="hover:bg-[#505050] transition md:text-5xl md:px-20 mt-6 px-18 text-4xl font-bold py-2 px-14 ml-4 bg-[#696969] text-black border border-black rounded-full"
+              onClick={() => setRemove(false)}>
+              NO
+            </button>
+          </div>
+        </div>
+      )}
+
+      {confirm && (
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-10">
+          <div className="md:px-8 md:py-8 bg-[#cbcbcb] py-5 px-6 p-6 rounded shadow-lg text-center border border-black rounded-[50px] ">
+            <h3 className="md:text-[50px] text-[44px] font-bold text-black mt-1">
+              Expense <br /> Deleted!
+            </h3>
+
+            <button
+              className="hover:bg-[#016B6D] transition md:px-36 md:py-3 font-bold mt-6 px-28 text-4xl py-2 bg-[#067E81] text-black border border-black rounded-full"
+              onClick={handleConfirm}>
               OK
             </button>
           </div>
@@ -416,7 +494,7 @@ export function EditExpense() {
               YES
             </button>
             <button
-              className=" hover:bg-[#505050] transition md:text-5xl md:px-20 mt-6 px-18 text-4xl font-bold py-2 px-14 ml-4 bg-[#696969] text-black border border-black rounded-full"
+              className="hover:bg-[#505050] transition md:text-5xl md:px-20 mt-6 px-18 text-4xl font-bold py-2 px-14 ml-4 bg-[#696969] text-black border border-black rounded-full"
               onClick={closePopUp}>
               NO
             </button>

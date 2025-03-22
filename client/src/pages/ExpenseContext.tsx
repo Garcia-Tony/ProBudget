@@ -1,13 +1,14 @@
 import React, {
   createContext,
-  ReactNode,
   useContext,
   useState,
   useEffect,
+  ReactNode,
 } from 'react';
 import { useData } from '../components/User';
 
-interface Expense {
+export interface Expense {
+  id: string;
   name: string;
   amount: string;
   dueDate: string;
@@ -17,7 +18,11 @@ interface Expense {
 interface ExpenseContextType {
   expenses: Expense[];
   addExpense: (expense: Expense) => void;
+  editExpense: (updatedExpense: Expense) => void;
+  selectedExpense: Expense | null;
+  setSelectedExpense: (expense: Expense | null) => void;
   totalAmount: number;
+  deleteExpense: (id: string) => void;
 }
 
 interface ExpenseProviderProps {
@@ -31,20 +36,58 @@ export const ExpenseProvider: React.FC<ExpenseProviderProps> = ({
 }) => {
   const { user } = useData();
   const [expenses, setExpenses] = useState<Expense[]>([]);
+  const [selectedExpense, setSelectedExpense] = useState<Expense | null>(null);
 
   useEffect(() => {
-    if (user) {
-      const storedExpenses = localStorage.getItem(`expenses_${user.userId}`);
-      setExpenses(storedExpenses ? JSON.parse(storedExpenses) : []);
+    if (!user || !user.userId) return;
+
+    const storedExpenses = localStorage.getItem(`expenses_${user.userId}`);
+    if (storedExpenses) {
+      const parsedExpenses = JSON.parse(storedExpenses);
+      setExpenses(parsedExpenses);
+    } else {
+      setExpenses([]);
     }
   }, [user]);
+
+  const editExpense = (updatedExpense: Expense) => {
+    setExpenses((prevExpenses) => {
+      const updatedExpenses = prevExpenses.map((exp) =>
+        exp.id === updatedExpense.id ? updatedExpense : exp
+      );
+
+      if (user?.userId) {
+        localStorage.setItem(
+          `expenses_${user.userId}`,
+          JSON.stringify(updatedExpenses)
+        );
+      }
+
+      return updatedExpenses;
+    });
+  };
+
+  const deleteExpense = (id: string) => {
+    setExpenses((prevExpenses) =>
+      prevExpenses.filter((expense) => expense.id !== id)
+    );
+
+    if (user?.userId) {
+      const updatedExpenses = expenses.filter((expense) => expense.id !== id);
+      localStorage.setItem(
+        `expenses_${user.userId}`,
+        JSON.stringify(updatedExpenses)
+      );
+    }
+  };
 
   const addExpense = (expense: Expense) => {
     if (!user) return;
 
-    const updatedExpenses = [...expenses, expense];
-    setExpenses(updatedExpenses);
+    const newExpense: Expense = { ...expense, id: Date.now().toString() };
+    const updatedExpenses = [...expenses, newExpense];
 
+    setExpenses(updatedExpenses);
     localStorage.setItem(
       `expenses_${user.userId}`,
       JSON.stringify(updatedExpenses)
@@ -57,7 +100,16 @@ export const ExpenseProvider: React.FC<ExpenseProviderProps> = ({
   );
 
   return (
-    <ExpenseContext.Provider value={{ expenses, addExpense, totalAmount }}>
+    <ExpenseContext.Provider
+      value={{
+        expenses,
+        addExpense,
+        editExpense,
+        selectedExpense,
+        setSelectedExpense,
+        totalAmount,
+        deleteExpense,
+      }}>
       {children}
     </ExpenseContext.Provider>
   );

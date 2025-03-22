@@ -1,9 +1,8 @@
 import { RegistrationForm } from './SignUp';
 import { SignInForm } from './Login';
 
-type Props = {
-  mode: 'sign-up' | 'log-in';
-};
+type Props = { mode: 'sign-up' | 'log-in' | 'new-expense' };
+
 export function AuthPage({ mode }: Props) {
   return (
     <div className="container m-4">

@@ -5,17 +5,23 @@ import { RegistrationForm } from './pages/SignUp';
 import { Home } from './pages/Home';
 import { NewExpense } from './pages/NewExpense';
 import { ExpenseProvider } from './pages/ExpenseContext';
+import { RecurringExpense } from './pages/RecurringExpense';
+import { CalendarExpense } from './pages/CalendarExpense';
+import { EditExpense } from './pages/EditExpense';
 
 export function App() {
   return (
     <UserProvider>
       <ExpenseProvider>
         <Routes>
-          <Route index element={<RegistrationForm />} />
+          <Route path="/" element={<RegistrationForm />} />
           <Route path="/sign-up" element={<Navigate to="/" />} />
           <Route path="/log-in" element={<AuthPage mode="log-in" />} />
           <Route path="/new-expense" element={<NewExpense />} />
           <Route path="/home" element={<Home />} />
+          <Route path="/recurring" element={<RecurringExpense />} />
+          <Route path="/calendar" element={<CalendarExpense />} />
+          <Route path="/edit-expense" element={<EditExpense />} />
         </Routes>
       </ExpenseProvider>
     </UserProvider>

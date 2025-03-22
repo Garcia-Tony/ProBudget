@@ -1,21 +1,46 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useExpenses } from './ExpenseContext';
+import { Expense, useExpenses } from './ExpenseContext';
 import { useData } from '../components/User';
 
 export function Home() {
-  const { expenses, totalAmount } = useExpenses();
+  const { user } = useData();
+  const { expenses, totalAmount, setSelectedExpense } = useExpenses();
   const { handleSignOut } = useData();
-  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [popUp, setPopUp] = useState(false);
   const [expense, setExpense] = useState(false);
+  const [, setStoredExpenses] = useState<Expense[]>([]);
+  const [, setCalendar] = useState(false);
+  const navigate = useNavigate();
 
   const handlePopUp = () => setPopUp(true);
   const closePopUp = () => setPopUp(false);
-  const handleExpense = () => setExpense(true);
+  const handleCalendar = () => setCalendar(false);
+  const handleExpense = () => setExpense((prev) => !prev);
   const closeExpense = () => setExpense(false);
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
+
+  const handleEditClick = (expense: Expense) => {
+    console.log('Editing Expense:', expense);
+    localStorage.setItem('selectedExpense', JSON.stringify(expense));
+    setSelectedExpense(expense);
+    navigate('/edit-expense');
+  };
+
+  useEffect(() => {
+    if (!user || !user.userId) {
+      console.error('Home.tsx: Cannot find user.');
+      return;
+    }
+
+    console.log('Home.tsx: User found:', user);
+
+    const savedExpenses = localStorage.getItem(`expenses_${user.userId}`);
+    if (savedExpenses) {
+      setStoredExpenses(JSON.parse(savedExpenses));
+    }
+  }, [user, expenses]);
 
   return (
     <div className="relative flex-grow flex-1 pl-2 px-4">
@@ -43,7 +68,27 @@ export function Home() {
             Expenses
           </h2>
         </div>
+
         <div className="absolute right-4 md:right-6 md:top-3 top-2 md:top-[22px]">
+          <button
+            onClick={() => {
+              handleCalendar();
+              navigate('/calendar');
+            }}>
+            <svg
+              className="mt-4 w-[55px] h-[50px] md:w-[60px] md:h-[60px] md:mt-[14px] text-[#01898B]"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M9 2a1 1 0 0 1 1 1v1h4V3a1 1 0 1 1 2 0v1h3a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h3V3a1 1 0 0 1 1-1zM8 6H5v3h14V6h-3v1a1 1 0 1 1-2 0V6h-4v1a1 1 0 0 1-2 0V6zm11 5H5v8h14v-8z"
+                strokeWidth="0"
+                stroke="currentColor"
+                fill="currentColor"
+              />
+            </svg>
+          </button>
+
           <button onClick={handleExpense}>
             <svg
               className="mt-4 w-12 h-12 md:w-[60px] md:h-[60px] md:mt-[14px] text-[#01898B]"
@@ -76,14 +121,14 @@ export function Home() {
                 Expense?
               </h3>
               <button
-                className="md:text-5xl md:px-20 mt-6 px-18 text-4xl font-bold py-2 px-12 bg-[#067E81] text-black border border-black rounded-full"
+                className="hover:bg-[#016B6D] transition md:text-5xl md:px-20 mt-6 px-18 text-4xl font-bold py-2 px-12 bg-[#067E81] text-black border border-black rounded-full"
                 onClick={() => {
                   navigate('/new-expense');
                 }}>
                 YES
               </button>
               <button
-                className="md:text-5xl md:px-20 mt-6 px-18 text-4xl font-bold py-2 px-14 ml-4 bg-[#696969] text-black border border-black rounded-full"
+                className="hover:bg-[#505050] transition md:text-5xl md:px-20 mt-6 px-18 text-4xl font-bold py-2 px-14 ml-4 bg-[#696969] text-black border border-black rounded-full"
                 onClick={closeExpense}>
                 NO
               </button>
@@ -110,15 +155,28 @@ export function Home() {
         )}
 
         {expenses.length > 0 &&
-          expenses.map((expense, index) => (
+          expenses.map((expense) => (
             <div
-              key={index}
+              key={expense.id}
               className="mb-[-4px] md:mb-[-5px] md:text-xl h-16 md:h-20 bg-[#EFEFEF] rounded-lg shadow-md shadow-[#00000099]">
-              <div className="flex px-2 md:mt-2 mb-2 md:mb-3 pt-1">
+              <div className="flex justify-between px-2 md:mt-2 mb-2 md:mb-3 pt-1">
                 <p>{expense.name}</p>
+                <button
+                  onClick={() => {
+                    handleEditClick(expense);
+                  }}>
+                  <svg
+                    className="md:w-[25px] md:h-[25px] w-4 h-4 mt-1 text-[#01898B]"
+                    viewBox="0 0 16 16">
+                    <path
+                      fill="000"
+                      d="M14.487333333333334 1.5126666666666666a1.75 1.75 0 0 0 -2.474666666666667 0l-0.7713333333333333 0.7713333333333333 2.474666666666667 2.474666666666667 0.7713333333333333 -0.7713333333333333a1.75 1.75 0 0 0 0 -2.474666666666667Zm-1.4786666666666666 3.953333333333333 -2.474666666666667 -2.474666666666667 -8.1 8.1a3.5 3.5 0 0 0 -0.88 1.476l-0.5333333333333333 1.79a0.5 0.5 0 0 0 0.622 0.622l1.79 -0.5333333333333333a3.5 3.5 0 0 0 1.476 -0.88L13.008666666666667 5.466666666666666Z"
+                    />
+                  </svg>
+                </button>
               </div>
               <div className="flex justify-between items-center px-2">
-                <p>{expense.dueDate}</p>
+                <p>Date Due: {expense.dueDate}</p>
                 <p>${expense.amount}</p>
               </div>
             </div>
@@ -152,9 +210,24 @@ export function Home() {
           <h2 className="text-4xl ml-3 text-[#01898B] font-bold mt-8 md:text-5xl md:ml-[25px]">
             Menu
           </h2>
+          <button
+            className="md:text-5xl md:px-28 md:ml-[25px] text-2xl block text-center border border-[#01898B] rounded-full py-1 md:py-2 px-[54px] ml-3 mt-7 bg-[#01898B] text-white  hover:bg-[#016B6D] transition"
+            onClick={() => {
+              navigate('/home');
+            }}>
+            Expense
+          </button>
 
           <button
-            className="md:text-4xl md:px-28 md:ml-[25px] text-2xl block text-center border border-[#01898B] rounded-full py-1 px-[55px] ml-3 mt-10 bg-[#01898B] text-white  hover:bg-[#016B6D] transition"
+            className="md:text-5xl md:px-[100px] md:ml-[25px] text-2xl block text-center border border-[#01898B] rounded-full py-1 md:py-2 px-[47px] ml-3 mt-5 bg-[#01898B] text-white  hover:bg-[#016B6D] transition"
+            onClick={() => {
+              navigate('/recurring');
+            }}>
+            Recurring
+          </button>
+
+          <button
+            className="md:text-5xl md:px-[115px] md:ml-[25px] text-2xl block text-center border border-[#01898B] rounded-full py-1 md:py-2 px-[55px] ml-3 mt-5 bg-[#01898B] text-white  hover:bg-[#016B6D] transition"
             onClick={handlePopUp}>
             Log Out
           </button>
@@ -168,7 +241,7 @@ export function Home() {
               Log Out?
             </h3>
             <button
-              className="md:text-5xl md:px-20 mt-6 px-18 text-4xl font-bold py-2 px-12 bg-[#067E81] text-black border border-black rounded-full"
+              className="hover:bg-[#055D5F] transition md:text-5xl md:px-20 mt-6 px-18 text-4xl font-bold py-2 px-12 bg-[#067E81] text-black border border-black rounded-full"
               onClick={() => {
                 handleSignOut();
                 navigate('/sign-up');
@@ -176,7 +249,7 @@ export function Home() {
               YES
             </button>
             <button
-              className="md:text-5xl md:px-20 mt-6 px-18 text-4xl font-bold py-2 px-14 ml-4 bg-[#696969] text-black border border-black rounded-full"
+              className="hover:bg-[#505050] transition md:text-5xl md:px-20 mt-6 px-18 text-4xl font-bold py-2 px-14 ml-4 bg-[#696969] text-black border border-black rounded-full"
               onClick={closePopUp}>
               NO
             </button>

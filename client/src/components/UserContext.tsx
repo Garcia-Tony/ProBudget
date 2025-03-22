@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useState } from 'react';
+import { ReactNode, createContext, useEffect, useState } from 'react';
 import { removeAuth, saveAuth } from '../lib';
 
 export type User = {
@@ -39,13 +39,14 @@ export function UserProvider({ children }: Props) {
     return localStorage.getItem('token') || undefined;
   });
 
-  const [expenses, setExpenses] = useState<Expense[]>(() => {
+  const [expenses, setExpenses] = useState<Expense[]>([]);
+
+  useEffect(() => {
     if (user?.userId) {
       const storedExpenses = localStorage.getItem(`expenses_${user.userId}`);
-      return storedExpenses ? JSON.parse(storedExpenses) : [];
+      setExpenses(storedExpenses ? JSON.parse(storedExpenses) : []);
     }
-    return [];
-  });
+  }, [user]);
 
   function handleSignIn(user: User, token: string) {
     setUser(user);
@@ -54,10 +55,12 @@ export function UserProvider({ children }: Props) {
     localStorage.setItem('user', JSON.stringify(user));
     localStorage.setItem('token', token);
 
-    const storedExpenses = localStorage.getItem(`expenses_${user.userId}`);
-    if (storedExpenses) {
-      setExpenses(JSON.parse(storedExpenses));
-    }
+    setTimeout(() => {
+      const storedExpenses = localStorage.getItem(`expenses_${user.userId}`);
+      if (storedExpenses) {
+        setExpenses(JSON.parse(storedExpenses));
+      }
+    }, 0);
   }
 
   function handleSignOut() {

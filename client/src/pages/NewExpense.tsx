@@ -17,20 +17,40 @@ export function NewExpense() {
   const [expense, setExpense] = useState(false);
   const [, setCancel] = useState(false);
   const [save, setSave] = useState(false);
+  const [, setCalendar] = useState(false);
 
   const handlePopUp = () => setPopUp(true);
   const closePopUp = () => setPopUp(false);
   const handleExpense = () => setExpense(true);
+  const handleCalendar = () => setCalendar(true);
   const closeExpense = () => setExpense(false);
   const closeCancel = () => setCancel(false);
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
-  const handleSave = () => setSave(true);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const newExpense = { name: expenseName, amount, dueDate, schedule };
+    const datePattern = /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/;
+
+    if (!expenseName || !amount || !dueDate || !schedule) {
+      alert('Please fill in all required fields.');
+      return;
+    }
+
+    if (!dueDate.match(datePattern)) {
+      alert('Invalid date format! Please enter the date in MM/DD/YYYY format.');
+      return;
+    }
+
+    const newExpense = {
+      id: Date.now().toString(),
+      name: expenseName,
+      amount,
+      dueDate,
+      schedule,
+    };
     addExpense(newExpense);
+    setSave(true);
   };
 
   return (
@@ -55,7 +75,26 @@ export function NewExpense() {
           className="size-14 max-w-[60px] max-h-[60px] mt-5 md:size-20 md:mt-4 md:max-w-[150px] md:max-h-[150px]"
         />
 
-        <div className="flex w-full justify-between items-center md:mt-4">
+        <div className="absolute right-4 md:right-6 md:top-3 top-2 md:top-[22px]">
+          <button
+            onClick={() => {
+              handleCalendar();
+              navigate('/calendar');
+            }}>
+            <svg
+              className="mt-4 w-[55px] h-[50px] md:w-[60px] md:h-[60px] md:mt-[14px] text-[#01898B]"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M9 2a1 1 0 0 1 1 1v1h4V3a1 1 0 1 1 2 0v1h3a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h3V3a1 1 0 0 1 1-1zM8 6H5v3h14V6h-3v1a1 1 0 1 1-2 0V6h-4v1a1 1 0 0 1-2 0V6zm11 5H5v8h14v-8z"
+                strokeWidth="0"
+                stroke="currentColor"
+                fill="currentColor"
+              />
+            </svg>
+          </button>
+
           <button onClick={handleExpense} className="ml-auto">
             <svg
               className="mt-4 w-12 h-12 md:w-[60px] md:h-[60px] md:mt-[-0px] text-[#01898B]"
@@ -78,30 +117,30 @@ export function NewExpense() {
               />
             </svg>
           </button>
-
-          {expense && (
-            <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-10">
-              <div className="rounded-[50px] bg-[#cbcbcb] p-6 px-6 rounded shadow-lg text-center border border-black ">
-                <h3 className="text-5xl font-bold mb-5 mt-5 text-black font-extrabold">
-                  Add New <br />
-                  Expense?
-                </h3>
-                <button
-                  className="mt-6 px-18 text-4xl font-bold py-2 px-12 bg-[#067E81] text-black border border-black rounded-full"
-                  onClick={() => {
-                    navigate('/new-expense');
-                  }}>
-                  YES
-                </button>
-                <button
-                  className="mt-6 px-18 text-4xl font-bold py-2 px-14 ml-4 bg-[#696969] text-black border border-black rounded-full"
-                  onClick={closeExpense}>
-                  NO
-                </button>
-              </div>
-            </div>
-          )}
         </div>
+
+        {expense && (
+          <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-10">
+            <div className="rounded-[50px] bg-[#cbcbcb] p-6 px-6 rounded shadow-lg text-center border border-black ">
+              <h3 className="md:text-6xl text-5xl font-bold mb-5 mt-5 text-black font-extrabold">
+                Add New <br />
+                Expense?
+              </h3>
+              <button
+                className="hover:bg-[#016B6D] transition md:text-5xl md:px-20 mt-6 px-18 text-4xl font-bold py-2 px-12 bg-[#067E81] text-black border border-black rounded-full"
+                onClick={() => {
+                  navigate('/new-expense');
+                }}>
+                YES
+              </button>
+              <button
+                className="hover:bg-[#505050] transition md:text-5xl md:px-20 mt-6 px-18 text-4xl font-bold py-2 px-14 ml-4 bg-[#696969] text-black border border-black rounded-full"
+                onClick={closeExpense}>
+                NO
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
       <hr className="my-4 border-t-2 border-[#01898B]" />
@@ -173,11 +212,11 @@ export function NewExpense() {
           <div className=" flex flex-col md:flex-row md:space-x-36 md:text-2xl md:items-center mt-2 pt-2 bg-[#E1E0E0] rounded-lg shadow-md shadow-gray-500 p-2">
             <label className="mt-[-2px] md:mt-1 md:mb-1 flex items-center space-x-2">
               <input
+                required
                 type="radio"
                 name="Schedule"
                 value="every-week"
                 className="form-radio text-[#01898B] md:w-4 md:h-4"
-                required
                 onChange={(e) => setSchedule(e.target.value)}
               />
               <span
@@ -255,14 +294,14 @@ export function NewExpense() {
 
         <div className="flex justify-center md:mt-1">
           <button
-            className=" drop-shadow-xl mt-6 px-[65px] md:px-[275px] mr-1 ml-2 text-4xl md:text-5xl font-bold py-1 md:py-2 px-12 bg-[#067E81] text-black border rounded-3xl"
+            className=" hover:bg-[#016B6D] transition transition drop-shadow-xl mt-6 px-[65px] md:px-[275px] mr-1 ml-2 text-4xl md:text-5xl font-bold py-1 md:py-2 px-12 bg-[#067E81] text-black border rounded-3xl"
             style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)' }}
-            onClick={handleSave}>
+            type="submit">
             Save
           </button>
 
           <button
-            className=" drop-shadow-xl mt-6 px-[50px] md:px-[275px] ml-6 text-4xl font-bold py-1 md:py-2 md:text-5xl px-12 bg-[#696969] text-black border rounded-3xl"
+            className=" hover:bg-[#505050] transition drop-shadow-xl mt-6 px-[50px] md:px-[275px] ml-6 text-4xl font-bold py-1 md:py-2 md:text-5xl px-12 bg-[#696969] text-black border rounded-3xl"
             style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)' }}
             onClick={() => {
               closeCancel();
@@ -281,7 +320,7 @@ export function NewExpense() {
             </h3>
 
             <button
-              className="md:px-36 md:py-3 font-bold mt-6 px-28 text-4xl py-2 bg-[#067E81] text-black border border-black rounded-full"
+              className="hover:bg-[#016B6D] transition md:px-36 md:py-3 font-bold mt-6 px-28 text-4xl py-2 bg-[#067E81] text-black border border-black rounded-full"
               onClick={() => navigate('/home')}>
               OK
             </button>
@@ -311,9 +350,24 @@ export function NewExpense() {
           <h2 className="text-4xl ml-3 text-[#01898B] font-bold mt-8 md:text-5xl md:ml-[25px]">
             Menu
           </h2>
+          <button
+            className="md:text-5xl md:px-28 md:ml-[25px] text-2xl block text-center border border-[#01898B] rounded-full py-1 md:py-2 px-[54px] ml-3 mt-7 bg-[#01898B] text-white  hover:bg-[#016B6D] transition"
+            onClick={() => {
+              navigate('/home');
+            }}>
+            Expense
+          </button>
 
           <button
-            className="md:text-4xl md:px-28 md:ml-[25px] text-2xl block text-center border border-[#01898B] rounded-full py-1 px-[55px] ml-3 mt-10 bg-[#01898B] text-white  hover:bg-[#016B6D] transition"
+            className="md:text-5xl md:px-[100px] md:ml-[25px] text-2xl block text-center border border-[#01898B] rounded-full py-1 md:py-2 px-[47px] ml-3 mt-5 bg-[#01898B] text-white  hover:bg-[#016B6D] transition"
+            onClick={() => {
+              navigate('/recurring');
+            }}>
+            Recurring
+          </button>
+
+          <button
+            className="md:text-5xl md:px-[115px] md:ml-[25px] text-2xl block text-center border border-[#01898B] rounded-full py-1 md:py-2 px-[55px] ml-3 mt-5 bg-[#01898B] text-white  hover:bg-[#016B6D] transition"
             onClick={handlePopUp}>
             Log Out
           </button>
@@ -327,7 +381,7 @@ export function NewExpense() {
               Log Out?
             </h3>
             <button
-              className="md:text-5xl md:px-20 mt-6 px-18 text-4xl font-bold py-2 px-12 bg-[#067E81] text-black border border-black rounded-full"
+              className="hover:bg-[#055D5F] transition md:text-5xl md:px-20 mt-6 px-18 text-4xl font-bold py-2 px-12 bg-[#067E81] text-black border border-black rounded-full"
               onClick={() => {
                 handleSignOut();
                 navigate('/sign-up');
@@ -335,7 +389,7 @@ export function NewExpense() {
               YES
             </button>
             <button
-              className="md:text-5xl md:px-20 mt-6 px-18 text-4xl font-bold py-2 px-14 ml-4 bg-[#696969] text-black border border-black rounded-full"
+              className=" hover:bg-[#505050] transition md:text-5xl md:px-20 mt-6 px-18 text-4xl font-bold py-2 px-14 ml-4 bg-[#696969] text-black border border-black rounded-full"
               onClick={closePopUp}>
               NO
             </button>
