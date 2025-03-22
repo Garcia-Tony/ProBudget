@@ -1,8 +1,8 @@
-import { RegistrationForm } from './SignUp';
-import { SignInForm } from './Login';
+import { RegistrationForm } from '../components/SignUp';
+import { SignInForm } from '../components/Login';
 
 type Props = {
-  mode: 'sign-up' | 'log-in' | 'new-expense';
+  mode: 'sign-up' | 'log-in';
 };
 export function AuthPage({ mode }: Props) {
   return (
