@@ -42,13 +42,7 @@ export function NewExpense() {
       return;
     }
 
-    const newExpense = {
-      id: Date.now().toString(),
-      name: expenseName,
-      amount,
-      dueDate,
-      schedule,
-    };
+    const newExpense = { name: expenseName, amount, dueDate, schedule };
     addExpense(newExpense);
     setSave(true);
   };

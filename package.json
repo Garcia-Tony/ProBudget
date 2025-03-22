@@ -27,9 +27,8 @@
   },
   "devDependencies": {
     "@learningfuze/lfz-config": "^1.0.0",
-    "@types/bcp-47": "^1.0.0",
-    "@types/cli-color": "^2.0.6",
-    "@types/css-tree": "^2.3.10",
+    "@types/fullcalendar": "^3.8.0",
+    "@types/react-calendar": "^3.9.0",
     "@typescript-eslint/eslint-plugin": "^6.3.0",
     "@typescript-eslint/parser": "^6.3.0",
     "autoprefixer": "^10.4.20",
@@ -53,16 +52,18 @@
     "stylelint-config-standard": "^32.0.0",
     "tailwindcss": "^4.0.4",
     "tsx": "^4.7.0",
-    "typescript": "^5.7.3"
+    "typescript": "4.8"
   },
   "dependencies": {
+    "@fullcalendar/daygrid": "^6.1.15",
+    "@fullcalendar/react": "^6.1.15",
     "argon2": "^0.41.1",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
-    "pg": "^8.13.1",
+    "pg": "^8.13.3",
     "react": "^18.3.1",
+    "react-calendar": "^5.1.0",
     "react-dom": "^18.3.1",
-    "react-icons": "^5.5.0",
-    "react-router-dom": "^6.29.0"
+    "react-router-dom": "^6.30.0"
   }
 }
